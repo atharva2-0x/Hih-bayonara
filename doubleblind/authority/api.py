@@ -291,7 +291,11 @@ def build_operator_app(auth: Authority, *, obs: httpx.AsyncClient | None = None,
         app.mount("/static", StaticFiles(directory=WARROOM_DIR), name="static")
 
         @app.get("/")
-        async def index():
+        async def site():
+            return FileResponse(WARROOM_DIR / "site.html")
+
+        @app.get("/warroom")
+        async def warroom():
             return FileResponse(WARROOM_DIR / "index.html")
 
     return app

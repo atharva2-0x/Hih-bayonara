@@ -1,21 +1,25 @@
 :root {
-  --bg: #0b1020; --panel: #111934; --node: #121a33; --line: #26304f;
-  --text: #e6e9f2; --muted: #9aa4bf;
+  --bg: #030814; --panel: rgba(12, 28, 68, .62); --node: #0b1836; --line: rgba(86, 146, 255, .2);
+  --text: #e9f0ff; --muted: #93a6cc;
   --red: #ff6b6b; --blue: #4da3ff; --gold: #f5c542; --violet: #a78bfa; --green: #34d399; --gray: #94a3b8;
   --mono: 'JetBrains Mono', Menlo, Consolas, monospace;
   --sans: Inter, 'Segoe UI', Helvetica, Arial, sans-serif;
 }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.45 var(--sans);
-  background-image: linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
-  background-size: 32px 32px; }
+  background-image: radial-gradient(1100px 520px at 85% -10%, rgba(47,123,255,.18), transparent 60%),
+                    linear-gradient(rgba(86,146,255,.04) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(86,146,255,.04) 1px, transparent 1px);
+  background-size: auto, 32px 32px, 32px 32px; }
+.panel { backdrop-filter: blur(6px); box-shadow: 0 20px 60px -40px rgba(47,123,255,.6); }
+.logo a { color: inherit; text-decoration: none; }
+.logo a span { color: #1fa2ff; }
 .mono { font-family: var(--mono); }
 .muted { color: var(--muted); }
 small { color: var(--muted); font-weight: 400; font-size: 11px; margin-left: 6px; letter-spacing: 0; }
 
 .top { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
-  padding: 14px 20px; border-bottom: 1px solid var(--line); }
+  padding: 14px 20px; border-bottom: 1px solid var(--line); background: rgba(3,8,20,.6); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 10; }
 .logo { font-weight: 800; letter-spacing: 3px; font-size: 20px; }
 .sub { color: var(--muted); margin-left: 12px; font-size: 12px; }
 .meta { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
@@ -123,3 +127,6 @@ button:disabled { opacity: .5; cursor: wait; }
   .top, .timeline, .controls { padding-left: 16px; padding-right: 16px; }
   .sub { display: block; margin: 4px 0 0; }
 }
+
+/* site theme: primary actions in electric blue (kept last so it wins) */
+button.primary { background: linear-gradient(135deg, #2f7bff, #1fa2ff); border-color: #1fa2ff; color: #fff; box-shadow: 0 8px 26px -8px rgba(47,123,255,.8); }

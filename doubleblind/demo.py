@@ -32,12 +32,12 @@ async def _pause(s: float) -> None:
         await asyncio.sleep(s)
 
 
-async def run_scenario(stack: LocalStack, scenario: str = "standard", *, equalizer: bool = True,
+async def run_scenario(stack: LocalStack, scenario: str = "standard", *, name: str | None = None, equalizer: bool = True,
                        bucket_ms: int = 150, pace_s: float = 0.0, phase_pause_s: float = 0.0,
                        limit: int | None = None, exports_dir: str | Path | None = None,
                        log: Log = print) -> dict:
     op = stack.operator_http
-    tid = await _create(stack, f"{scenario}-demo", equalizer, bucket_ms)
+    tid = await _create(stack, (name or f"{scenario}-demo")[:80], equalizer, bucket_ms)
     log(f"▸ trial {tid} created ({scenario}, equalizer {'on' if equalizer else 'off'}, bucket {bucket_ms} ms)")
     await _pause(phase_pause_s)
 
@@ -126,7 +126,9 @@ class Demo:
     async def run(self, opts: dict) -> dict:
         assert self.stack is not None
         async with self._lock:
-            opts = {k: v for k, v in opts.items() if k in ("scenario", "equalizer", "bucket_ms", "limit")}
+            opts = {k: v for k, v in opts.items() if k in ("scenario", "name", "equalizer", "bucket_ms", "limit")}
+            if opts.get("scenario") not in (None, "standard", "canary", "contamination"):
+                opts.pop("scenario")
             return await run_scenario(self.stack, pace_s=0.12, phase_pause_s=1.0, exports_dir=self.exports_dir,
                                       log=lambda m: self.stack.authority.bus.publish({"type": "log", "msg": m}),
                                       **opts)

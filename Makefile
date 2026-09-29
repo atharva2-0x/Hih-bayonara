@@ -17,7 +17,7 @@ test: ## run the test suite
 demo: ## terminal demo: standard, canary and contamination scenarios + verify + tamper
 	$(PY) -m doubleblind demo --fresh --replay
 
-serve: ## local simulation + War Room at http://127.0.0.1:8100
+serve: ## local simulation: site at http://127.0.0.1:8100, War Room at /warroom
 	$(PY) -m doubleblind serve
 
 bench: ## leakage / overhead / KV-cache benchmarks -> docs/results

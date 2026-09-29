@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DOUBLE-BLIND · Secure Your Findings</title>
+<meta name="description" content="Isolation built to clinical-trial standards for adversarial AI safety testing: sealed, blinded, canary-watched and replayable.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23061233'/%3E%3Cpath d='M16 5l9 4v7c0 5.5-3.8 9.2-9 11-5.2-1.8-9-5.5-9-11V9z' fill='none' stroke='%233ab4ff' stroke-width='2.4'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/static/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- ============================================================ NAV -->
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top" aria-label="DOUBLE-BLIND home">
+      <span class="brand-mark" data-icon="shield"></span>
+      <span class="brand-text">DOUBLE<span>-</span>BLIND</span>
+    </a>
+    <nav class="links" id="navLinks" aria-label="Primary">
+      <a href="#platform">Platform</a>
+      <a href="#protocol">Protocol</a>
+      <a href="#proof">Proof</a>
+      <a href="#evidence">Evidence</a>
+      <a href="#start">Start a trial</a>
+    </nav>
+    <div class="nav-right">
+      <span class="live-pill" id="livePill" title="live event stream"><i></i><span>connecting</span></span>
+      <a class="btn btn-primary btn-sm" href="/warroom">Open War Room <span data-icon="arrow"></span></a>
+      <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span data-icon="menu"></span></button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+<!-- ============================================================ HERO -->
+<section class="hero" id="top">
+  <canvas id="particles" aria-hidden="true"></canvas>
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="wrap hero-grid">
+    <div class="hero-copy reveal">
+      <p class="eyebrow"><span data-icon="flask"></span> Hack in Hills '26 · Track 04 · Bayora</p>
+      <h1>Protect What Matters.<br><span class="grad">Secure</span> Your Findings.</h1>
+      <p class="lead">DOUBLE-BLIND runs every red-team / blue-team evaluation like a <b>double-blind clinical trial</b>:
+        pre-registered, sealed, watched by canaries, and replayable by anyone from a tamper-evident ledger.</p>
+      <ul class="hero-features">
+        <li><span class="fi" data-icon="commit"></span><b>Commit–Reveal</b><small>pre-registered</small></li>
+        <li><span class="fi" data-icon="lock"></span><b>Sealed Enclave</b><small>blue can't watch</small></li>
+        <li><span class="fi" data-icon="sliders"></span><b>Equalizer</b><small>no side channels</small></li>
+        <li><span class="fi" data-icon="bell"></span><b>Canaries</b><small>leaks caught</small></li>
+      </ul>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#start" data-quickrun>Run a live trial <span data-icon="arrow"></span></a>
+        <a class="btn btn-ghost" href="#platform">Explore the platform</a>
+      </div>
+    </div>
+
+    <div class="console reveal" aria-label="live trial console">
+      <div class="console-bar">
+        <span class="dots"><i></i><i></i><i></i></span>
+        <span class="console-title">LIVE TRIAL CONSOLE</span>
+        <span class="badge" id="consoleState">IDLE</span>
+      </div>
+      <div class="console-stats">
+        <div><small>Ledger</small><b id="cLedger">#0</b></div>
+        <div><small>Trial</small><b id="cTrial" class="mono">—</b></div>
+        <div><small>Chain</small><b id="cChain">—</b></div>
+        <div><small>Policy</small><b id="cPolicy">—</b></div>
+      </div>
+      <div class="topo-wrap">
+        <canvas id="topology" aria-label="zone topology with live packets"></canvas>
+        <div class="topo-legend">
+          <span><i class="lg-ok"></i>allowed path</span>
+          <span><i class="lg-no"></i>forbidden path</span>
+          <span><i class="lg-pk"></i>sealed case</span>
+        </div>
+      </div>
+      <div class="console-bottom">
+        <div class="spark-card">
+          <small>cases / second · last 60 s</small>
+          <canvas id="spark" height="56" aria-label="throughput sparkline"></canvas>
+        </div>
+        <ol class="ticker mono" id="heroTicker" aria-label="latest ledger events"></ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ PLATFORM -->
+<section class="section" id="platform">
+  <div class="wrap">
+    <header class="sec-head reveal">
+      <p class="eyebrow">The platform</p>
+      <h2>Six Zones. <span class="grad">Zero</span> Shared State.</h2>
+      <p>Each zone has its own network, certificate authority, CPU set and keys. Only the Arbiter touches more than one zone, and it writes down every step.</p>
+    </header>
+    <div class="cards" id="zoneCards"></div>
+  </div>
+</section>
+
+<!-- ============================================================ PROTOCOL -->
+<section class="section section-alt" id="protocol">
+  <div class="wrap">
+    <header class="sec-head reveal">
+      <p class="eyebrow">Our proven protocol</p>
+      <h2>Run It Like a <span class="grad">Clinical Trial</span></h2>
+      <p>Every trial walks the same six steps. The timeline below follows the latest trial live.
+        <span class="trial-chip" id="protoTrial">no trial yet</span></p>
+    </header>
+    <ol class="timeline reveal" id="timeline"></ol>
+    <div class="invalid-banner" id="protoInvalid" hidden></div>
+  </div>
+</section>
+
+<!-- ============================================================ PROOF -->
+<section class="section" id="proof">
+  <div class="wrap">
+    <header class="sec-head reveal">
+      <p class="eyebrow">Proof, not promises</p>
+      <h2>Threats Are Real. <span class="grad">We Have the Numbers.</span></h2>
+      <p>Live counters come straight from the running Arbiter. Benchmarks come from <code>make bench</code>, with 95% confidence intervals.</p>
+    </header>
+    <div class="stats" id="stats"></div>
+    <div class="bench reveal" id="bench"></div>
+  </div>
+</section>
+
+<!-- ============================================================ EVIDENCE + START -->
+<section class="section section-alt" id="evidence">
+  <div class="wrap two-col">
+    <div class="quotes reveal">
+      <p class="eyebrow">What the brief demands</p>
+      <h2>Four Requirements. <span class="grad">Four Proofs.</span></h2>
+      <div class="carousel" id="carousel" aria-roledescription="carousel">
+        <div class="slides" id="slides"></div>
+        <div class="car-nav">
+          <button class="icon-btn" id="prevSlide" aria-label="previous requirement"><span data-icon="chevL"></span></button>
+          <div class="car-dots" id="carDots" role="tablist"></div>
+          <button class="icon-btn" id="nextSlide" aria-label="next requirement"><span data-icon="chevR"></span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="start reveal" id="start">
+      <div class="start-shield" aria-hidden="true">
+        <svg viewBox="0 0 200 220"><defs>
+          <radialGradient id="sg" cx="50%" cy="45%" r="60%"><stop offset="0" stop-color="#3ab4ff" stop-opacity=".55"/><stop offset="1" stop-color="#3ab4ff" stop-opacity="0"/></radialGradient>
+          <linearGradient id="sl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6fd0ff"/><stop offset="1" stop-color="#2f6bff"/></linearGradient></defs>
+          <circle cx="100" cy="105" r="95" fill="url(#sg)"/>
+          <circle class="ring r1" cx="100" cy="105" r="80"/><circle class="ring r2" cx="100" cy="105" r="64"/>
+          <path d="M100 30l58 24v45c0 36-24 60-58 72-34-12-58-36-58-72V54z" fill="rgba(10,30,80,.65)" stroke="url(#sl)" stroke-width="4"/>
+          <rect x="78" y="98" width="44" height="36" rx="6" fill="url(#sl)"/><path d="M86 98v-10a14 14 0 0 1 28 0v10" fill="none" stroke="url(#sl)" stroke-width="6"/>
+          <circle cx="100" cy="114" r="5" fill="#061233"/><rect x="98" y="116" width="4" height="10" fill="#061233"/>
+        </svg>
+      </div>
+      <p class="eyebrow">Get protected today</p>
+      <h2>Start a Blinded Trial</h2>
+      <p class="muted">Launch a real trial on this Arbiter and watch it move through the protocol, the console and the War Room.</p>
+      <form id="trialForm" class="form" novalidate>
+        <label class="field"><span>Trial name</span><input name="name" value="judge-demo" maxlength="60" required></label>
+        <fieldset class="field">
+          <legend>Scenario</legend>
+          <div class="seg" role="radiogroup">
+            <label><input type="radio" name="scenario" value="standard" checked><span>Blinded trial</span></label>
+            <label><input type="radio" name="scenario" value="canary"><span>Canary drill</span></label>
+            <label><input type="radio" name="scenario" value="contamination"><span>Contamination</span></label>
+          </div>
+        </fieldset>
+        <div class="row2">
+          <label class="field"><span>Time bucket <b id="bucketVal">150 ms</b></span><input type="range" name="bucket_ms" min="50" max="400" step="10" value="150"></label>
+          <label class="field"><span>Cases <b id="casesVal">34</b></span><input type="range" name="limit" min="6" max="34" step="1" value="34"></label>
+        </div>
+        <label class="switch"><input type="checkbox" name="equalizer" checked><i></i><span>Equalizer on: responses are canonical, size- and time-bucketed</span></label>
+        <button class="btn btn-primary btn-block" type="submit" id="launchBtn">Launch trial <span data-icon="arrow"></span></button>
+      </form>
+      <div class="run-status" id="runStatus" hidden>
+        <div class="run-head"><span id="runTitle">Launching…</span><a href="/warroom" class="link">Open in War Room <span data-icon="arrow"></span></a></div>
+        <ol class="mini-steps" id="miniSteps"></ol>
+        <p class="run-note" id="runNote"></p>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ============================================================ FOOTER -->
+<footer class="footer">
+  <div class="wrap foot-grid">
+    <div>
+      <a class="brand" href="#top"><span class="brand-mark" data-icon="shield"></span><span class="brand-text">DOUBLE<span>-</span>BLIND</span></a>
+      <p class="muted">Clinical-trial-grade isolation for adversarial AI safety testing. Blind the test. Trust the result.</p>
+    </div>
+    <div><h4>Platform</h4><a href="#platform">Six zones</a><a href="#protocol">Trial protocol</a><a href="/warroom">War Room</a></div>
+    <div><h4>Live evidence</h4><a href="/v1/ledger/verify" target="_blank" rel="noopener">Ledger verification</a><a href="/v1/policy" target="_blank" rel="noopener">Policy invariants</a><a href="/v1/metrics" target="_blank" rel="noopener">Benchmark results</a></div>
+    <div><h4>Resources</h4><a href="https://github.com/atharva2-0x/Hih-bayonara" target="_blank" rel="noopener">Source code</a><a href="https://github.com/atharva2-0x/Hih-bayonara/blob/feat/doubleblind-poc/docs/threat-model.md" target="_blank" rel="noopener">Threat model</a><a href="https://github.com/atharva2-0x/Hih-bayonara/blob/feat/doubleblind-poc/docs/residual-risk.md" target="_blank" rel="noopener">Residual risk</a></div>
+    <div><h4>Status</h4><p class="foot-live mono" id="footLive">ledger —</p><p class="foot-live mono" id="footPolicy">policy —</p></div>
+  </div>
+  <div class="wrap foot-bottom"><span>© 2026 DOUBLE-BLIND · Hack in Hills '26</span><span>No payload text is ever rendered on this page: only IDs, hashes and counts.</span></div>
+</footer>
+
+<!-- zone detail dialog -->
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-card">
+    <button class="icon-btn modal-x" data-close aria-label="Close"><span data-icon="x"></span></button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script src="/static/site.js"></script>
+</body>
+</html>

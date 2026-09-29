@@ -265,3 +265,26 @@ def test_require_isolation_rejects_local_sim(stack):
         return (await op.post(f"/v1/trials/{tid}/arm")).status_code
 
     assert run(go()) == 409
+
+
+def test_operator_serves_site_warroom_and_assets(stack):
+    s = stack
+
+    async def go():
+        return [await s.operator_http.get(p) for p in ("/", "/warroom", "/static/site.js", "/static/site.css", "/static/app.js")]
+
+    site, warroom, js, css, wr_js = run(go())
+    assert site.status_code == 200 and "Secure" in site.text and "/static/site.js" in site.text
+    assert warroom.status_code == 200 and "War Room" in warroom.text
+    assert js.status_code == css.status_code == wr_js.status_code == 200
+
+
+def test_demo_run_accepts_name_and_limit(stack):
+    from doubleblind.demo import run_scenario
+
+    async def go():
+        await run_scenario(stack, "standard", name="judge-x", limit=4, bucket_ms=25, log=lambda m: None)
+        return (await stack.operator_http.get("/v1/trials")).json()["trials"]
+
+    trials = run(go())
+    assert trials[0]["name"] == "judge-x" and trials[0]["state"] == "ATTESTED" and trials[0]["case_count"] == 4

@@ -16,7 +16,8 @@ Diagrams are in [`ARCHITECTURE.md`](./ARCHITECTURE.md).
 > verified offline with 34/34 bit-for-bit replay, and a canary drill invalidating its trial over the
 > observability → Arbiter mTLS path.
 > **Measured:** side-channel attacker 100% → 50.0% (chance), KV-cache observer 100% → 45% (chance), isolation
-> +3.6 ms p50. See [`README.md`](./README.md), [`docs/results/`](docs/results/README.md) and
+> +3.6 ms p50. **UI:** a themed, live site at `/` (topology console, protocol timeline, live counters, trial launcher)
+> plus the War Room at `/warroom`. See [`README.md`](./README.md), [`docs/results/`](docs/results/README.md) and
 > [`docs/residual-risk.md`](docs/residual-risk.md) (including what is *not* built).
 
 ---

@@ -51,10 +51,10 @@ rather than production latency):
 
 ```bash
 make setup          # venv + dependencies
-make test           # 72 tests
+make test           # 74 tests
 make demo           # standard trial → ATTESTED, canary drill → INVALIDATED,
                     # contamination → INVALIDATED, offline verify + replay, tamper test
-make serve          # War Room at http://127.0.0.1:8100 (buttons drive the scenarios)
+make serve          # site at http://127.0.0.1:8100 · War Room at /warroom (both drive live trials)
 ```
 
 In local mode all zones share one process. The breach drill says so: its certificate profile is `local-sim`,
@@ -71,7 +71,7 @@ make docker-trial   # drill in every zone → blinded trial → reveal → expor
 make down
 ```
 
-The War Room is on `http://127.0.0.1:8100` (the operator listener is published on the host's loopback only).
+The site is on `http://127.0.0.1:8100` and the War Room on `/warroom` (the operator listener is published on the host's loopback only).
 Install [gVisor](https://gvisor.dev/docs/user_guide/install/) (`runsc`) to get the full sandbox. Without it,
 `make env` records `process.gvisor_sandbox` as an accepted risk, and every trial's ledger shows it.
 
@@ -89,6 +89,29 @@ docker compose --profile tenants run --rm red-runner red init-vault --import /da
 ```
 
 Records go straight into the encrypted vault; nothing prints them, and the War Room only ever shows IDs and hashes.
+
+## The interface
+
+**Site** (`/`): the front door. It keeps the look of a security product page but is wired to the running
+Arbiter. It has:
+- a particle-network hero, and a **live trial console** whose zone topology animates real sealed cases,
+  contained leaks, drill sweeps and breaches from the event stream
+- six zone cards, each with a live status line and a detail dialog
+- a protocol timeline that follows the latest trial through every state
+- count-up counters, some live and some from the benchmarks
+- the brief's four requirements, each paired with its proof
+- a form that launches a real trial (blinded, canary drill or contamination)
+
+**War Room** (`/warroom`): the operator's lane-by-lane view of a trial.
+
+| Live blinded trial | Breach caught |
+|---|---|
+| ![site hero](docs/site-hero.png) | ![breach](docs/site-breach.png) |
+
+<details><summary>Full page</summary>
+
+![site](docs/site.png)
+</details>
 
 ## The demo (5 minutes)
 
@@ -116,11 +139,11 @@ doubleblind/
   verifier/      dbverify (offline, replay)
   bench/         leakage score, overhead, KV-cache isolation
   deploy/        zone services, PKI, Docker-mode CLIs
-  warroom/       dashboard (no external dependencies)
+  warroom/       site (/) + War Room (/warroom): HTML/CSS/JS, no external dependencies
   local.py demo.py __main__.py
 infra/           seccomp profile + builder, Falco rules, DOCKER-USER firewall
 scripts/         gen_env.py, docker_trial.sh
-tests/           72 tests: unit, e2e trials, verifier, drill, live mTLS
+tests/           74 tests: unit, e2e trials, verifier, drill, live mTLS
 ```
 
 ## CLI

@@ -2,7 +2,7 @@
 
 Local simulation (no Docker needed)
     python -m doubleblind demo [--scenario all|standard|canary|contamination]
-    python -m doubleblind serve            # War Room on http://127.0.0.1:8100
+    python -m doubleblind serve            # site on http://127.0.0.1:8100, War Room at /warroom
     python -m doubleblind bench [leakage|overhead|kvcache|all]
     python -m doubleblind policy           # exhaustive policy invariant check
     python -m doubleblind verify EXPORT [--replay stub]
@@ -72,7 +72,8 @@ def _cmd_serve(a) -> int:
         uvicorn.Server(uvicorn.Config(stack.apps["red"], host=a.host, port=a.port + 1, log_level="warning")),
         uvicorn.Server(uvicorn.Config(stack.apps["blue"], host=a.host, port=a.port + 2, log_level="warning")),
     ]
-    print(f"War Room      http://{a.host}:{a.port}/")
+    print(f"Site          http://{a.host}:{a.port}/")
+    print(f"War Room      http://{a.host}:{a.port}/warroom")
     print(f"red listener  http://{a.host}:{a.port + 1}   blue listener http://{a.host}:{a.port + 2}")
     print("(local simulation: zones share one process; see docker-compose.yml for the isolated deployment)")
 
@@ -137,7 +138,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--fresh", action="store_true", help="wipe the workdir first")
     p.set_defaults(fn=_cmd_demo)
 
-    p = sub.add_parser("serve", help="local simulation + War Room")
+    p = sub.add_parser("serve", help="local simulation + site + War Room")
     p.add_argument("--host", default="127.0.0.1")
     p.add_argument("--port", type=int, default=8100)
     p.add_argument("--workdir", default="var/serve")
