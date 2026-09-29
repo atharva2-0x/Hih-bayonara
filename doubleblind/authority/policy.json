@@ -1,0 +1,52 @@
+{
+  "version": "2026-09-29.1",
+  "description": "DOUBLE-BLIND ABAC policy: role x action x trial-state. Default deny, deny overrides allow.",
+  "default_effect": "deny",
+  "roles": ["red", "blue", "operator", "auditor", "observability"],
+  "actions": [
+    "trial:create", "trial:status", "trial:arm", "trial:start", "trial:conclude", "trial:invalidate",
+    "commitment:submit", "bundle:upload", "session:obtain", "case:submit", "artifact:reveal",
+    "report:read", "red_cases:read", "blue_bundle:read", "verdicts:read",
+    "ledger:read", "metadata:read", "export:read", "drill:canary", "alert:raise"
+  ],
+  "rules": [
+    {"id": "A01", "effect": "allow", "roles": ["operator"], "actions": ["trial:create"], "states": "*"},
+    {"id": "A02", "effect": "allow", "roles": ["red", "blue", "operator", "auditor"], "actions": ["trial:status"], "states": "*"},
+    {"id": "A03", "effect": "allow", "roles": ["red", "blue"], "actions": ["commitment:submit"], "states": ["DRAFT"]},
+    {"id": "A04", "effect": "allow", "roles": ["blue"], "actions": ["bundle:upload"], "states": ["REGISTERED"]},
+    {"id": "A05", "effect": "allow", "roles": ["operator"], "actions": ["trial:arm"], "states": ["REGISTERED"]},
+    {"id": "A06", "effect": "allow", "roles": ["operator"], "actions": ["trial:start"], "states": ["ARMED"]},
+    {"id": "A07", "effect": "allow", "roles": ["red"], "actions": ["session:obtain", "case:submit"], "states": ["RUNNING"]},
+    {"id": "A08", "effect": "allow", "roles": ["operator"], "actions": ["trial:conclude"], "states": ["RUNNING"]},
+    {"id": "A09", "effect": "allow", "roles": ["red", "blue"], "actions": ["artifact:reveal"], "states": ["CONCLUDED"]},
+    {"id": "A10", "effect": "allow", "roles": ["red", "blue", "auditor", "operator"], "actions": ["report:read"], "states": ["REVEALED", "ATTESTED"]},
+    {"id": "A11", "effect": "allow", "roles": ["blue", "auditor"], "actions": ["red_cases:read"], "states": ["REVEALED", "ATTESTED"]},
+    {"id": "A12", "effect": "allow", "roles": ["red", "auditor"], "actions": ["blue_bundle:read"], "states": ["REVEALED", "ATTESTED"]},
+    {"id": "A13", "effect": "allow", "roles": ["red", "blue", "auditor"], "actions": ["verdicts:read"], "states": ["REVEALED", "ATTESTED"]},
+    {"id": "A14", "effect": "allow", "roles": ["operator", "auditor"], "actions": ["ledger:read", "metadata:read"], "states": "*"},
+    {"id": "A15", "effect": "allow", "roles": ["red", "blue"], "actions": ["ledger:read"], "states": ["REVEALED", "ATTESTED", "INVALIDATED"]},
+    {"id": "A16", "effect": "allow", "roles": ["operator", "auditor"], "actions": ["export:read"], "states": ["REVEALED", "ATTESTED", "INVALIDATED"]},
+    {"id": "A17", "effect": "allow", "roles": ["operator"], "actions": ["drill:canary"], "states": ["ARMED", "RUNNING"]},
+    {"id": "A18", "effect": "allow", "roles": ["operator", "observability"], "actions": ["trial:invalidate", "alert:raise"], "states": ["DRAFT", "REGISTERED", "ARMED", "RUNNING", "CONCLUDED", "REVEALED"]},
+
+    {"id": "D01", "effect": "deny", "roles": ["blue"], "actions": ["red_cases:read", "case:submit", "session:obtain", "verdicts:read"], "states": ["DRAFT", "REGISTERED", "ARMED", "RUNNING", "CONCLUDED"],
+     "why": "R1: red payloads must not be observable by blue before the test concludes"},
+    {"id": "D02", "effect": "deny", "roles": ["red"], "actions": ["blue_bundle:read", "bundle:upload", "verdicts:read"], "states": ["DRAFT", "REGISTERED", "ARMED", "RUNNING", "CONCLUDED"],
+     "why": "R2: blue defensive logic must not be exposed to red"},
+    {"id": "D03", "effect": "deny", "roles": ["red", "blue"], "actions": ["ledger:read", "report:read", "export:read"], "states": ["DRAFT", "REGISTERED", "ARMED", "RUNNING", "CONCLUDED"],
+     "why": "tenants never see audit data or results while the trial is blinded"},
+    {"id": "D04", "effect": "deny", "roles": ["operator", "auditor"], "actions": ["case:submit", "commitment:submit", "bundle:upload", "artifact:reveal"], "states": "*",
+     "why": "the platform never acts as a tenant"}
+  ],
+  "invariants": [
+    {"id": "I1", "text": "Blue can never read red cases before REVEALED", "roles": ["blue"], "actions": ["red_cases:read"], "states": ["DRAFT", "REGISTERED", "ARMED", "RUNNING", "CONCLUDED"], "must_be": "deny"},
+    {"id": "I2", "text": "Red can never read the blue bundle before REVEALED", "roles": ["red"], "actions": ["blue_bundle:read"], "states": ["DRAFT", "REGISTERED", "ARMED", "RUNNING", "CONCLUDED"], "must_be": "deny"},
+    {"id": "I3", "text": "No tenant sees verdicts, reports or the ledger before REVEALED", "roles": ["red", "blue"], "actions": ["verdicts:read", "report:read", "ledger:read"], "states": ["DRAFT", "REGISTERED", "ARMED", "RUNNING", "CONCLUDED"], "must_be": "deny"},
+    {"id": "I4", "text": "Cases can only be submitted while RUNNING, and only by red", "roles": ["red", "blue", "operator", "auditor", "observability"], "actions": ["case:submit"], "states": ["DRAFT", "REGISTERED", "ARMED", "CONCLUDED", "REVEALED", "ATTESTED", "INVALIDATED"], "must_be": "deny"},
+    {"id": "I5", "text": "Commitments are frozen once the trial is REGISTERED", "roles": ["red", "blue", "operator", "auditor", "observability"], "actions": ["commitment:submit"], "states": ["REGISTERED", "ARMED", "RUNNING", "CONCLUDED", "REVEALED", "ATTESTED", "INVALIDATED"], "must_be": "deny"},
+    {"id": "I6", "text": "Only blue uploads the defense bundle, and only before ARMED", "roles": ["red", "operator", "auditor", "observability"], "actions": ["bundle:upload"], "states": "*", "must_be": "deny"},
+    {"id": "I7", "text": "Terminal trials cannot be invalidated or re-opened", "roles": ["red", "blue", "operator", "auditor", "observability"], "actions": ["trial:invalidate", "trial:arm", "trial:start", "case:submit"], "states": ["ATTESTED", "INVALIDATED"], "must_be": "deny"},
+    {"id": "I8", "text": "Red may submit cases while RUNNING (liveness: the policy is not vacuous)", "roles": ["red"], "actions": ["case:submit"], "states": ["RUNNING"], "must_be": "allow"},
+    {"id": "I9", "text": "Both teams can read results after REVEALED (liveness)", "roles": ["red", "blue"], "actions": ["report:read", "verdicts:read"], "states": ["REVEALED", "ATTESTED"], "must_be": "allow"}
+  ]
+}

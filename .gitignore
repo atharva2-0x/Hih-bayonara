@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+# runtime state: keys, ledgers, tenant secrets, generated certs, exports
+.state/
+var/
+infra/certs/out/
+.env
+*.db
+*.db-wal
+*.db-shm
+exports/
