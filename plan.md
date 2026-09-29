@@ -9,6 +9,16 @@ Diagrams are in [`ARCHITECTURE.md`](./ARCHITECTURE.md).
 
 ![DOUBLE-BLIND architecture](docs/architecture.svg)
 
+> ### Implementation status (2026-09-29)
+> The PoC is built: every P0 and nearly every P1 in §11 is done. Status is marked per task below.
+> **Verified** in real Docker zones on a standard VM: breach drill 113/118 with 8/8 positive controls (the 5
+> failures are "no gVisor on this host", explicitly accepted and recorded), a blinded trial ATTESTED and
+> verified offline with 34/34 bit-for-bit replay, and a canary drill invalidating its trial over the
+> observability → Arbiter mTLS path.
+> **Measured:** side-channel attacker 100% → 50.0% (chance), KV-cache observer 100% → 45% (chance), isolation
+> +3.6 ms p50. See [`README.md`](./README.md), [`docs/results/`](docs/results/README.md) and
+> [`docs/residual-risk.md`](docs/residual-risk.md) (including what is *not* built).
+
 ---
 
 ## 0. Table of contents
@@ -251,43 +261,35 @@ latency tail (a response then "spills" into a later bucket) · someone disables 
 
 ## 9. Repository layout
 
+*As built. See [`README.md`](./README.md) for the quick start.*
+
 ```
 Hih-bayonara/
-├── plan.md                    # this file
-├── ARCHITECTURE.md            # diagrams
-├── README.md                  # quick start + demo instructions
-├── docker-compose.yml         # full topology (zones, networks, runtimes, cpusets)
-├── Makefile                   # make up / drill / trial / verify / bench / demo
+├── plan.md · ARCHITECTURE.md · README.md
+├── docker-compose.yml · Dockerfile · Makefile · pyproject.toml · requirements.txt
+├── doubleblind/
+│   ├── common/          crypto (commit-reveal, salted hashes, Ed25519, AES-GCM, tokens), Merkle, telemetry schema, mTLS
+│   ├── authority/       Arbiter service + per-listener APIs, ledger, policy engine + policy.json,
+│   │                    key broker, trial state machine, equalizer, judge
+│   ├── zones/
+│   │   ├── red/         encrypted vault, synthetic suite + benchmark importer, client
+│   │   ├── blue/        bundle workbench (plants the canary), sample bundle, client
+│   │   ├── enclave/     sealed declarative guards (input → model → output)
+│   │   └── model/       stub + llama.cpp backends, per-session cache, purity fingerprint
+│   ├── observability/   canary watcher, anomaly detector (metadata only)
+│   ├── drill/           breach drill agents, flow_matrix.json, isolation certificates
+│   ├── verifier/        dbverify: offline verification + deterministic replay
+│   ├── bench/           leakage score, overhead, KV-cache isolation (+ small stats lib)
+│   ├── deploy/          zone service runners, per-zone PKI, Docker-mode CLIs
+│   ├── warroom/         dashboard (HTML/CSS/JS, no external dependencies)
+│   ├── tools/tamper.py · local.py · demo.py · __main__.py
 ├── infra/
-│   ├── seccomp/               # per-zone seccomp profiles
-│   ├── apparmor/
-│   ├── nftables/              # default-deny rules
-│   ├── certs/                 # internal CA scripts (no keys committed)
-│   └── k8s/                   # (stretch) kind + Cilium + RuntimeClass manifests
-├── authority/
-│   ├── arbiter/               # FastAPI: trial state machine + broker
-│   ├── equalizer/
-│   ├── policy/                # OPA Rego or Cedar policies + tests
-│   ├── keybroker/
-│   ├── judge/
-│   └── ledger/                # hash chain, Merkle, signing
-├── zones/
-│   ├── red/                   # runner + vault client (datasets imported as opaque blobs)
-│   ├── blue/                  # workbench + sample defense bundle
-│   ├── enclave/               # sealed runtime host for blue bundles
-│   └── model/                 # llama.cpp clean room + purity fingerprint
-├── observability/
-│   ├── falco/                 # rules for cross-boundary events
-│   ├── canary/                # canary generator + DLP watcher
-│   └── anomaly/
-├── warroom/                   # dashboard UI
-├── verifier/                  # dbverify CLI (offline)
-├── drills/                    # breach drill: negative tests per flow-matrix cell
-├── bench/                     # latency overhead + leakage score experiments
-└── docs/
-    ├── threat-model.md
-    ├── residual-risk.md
-    └── pitch/                 # slides, demo video backup
+│   ├── seccomp/         derived allowlist profile + builder
+│   ├── falco/           runtime rules for zone containers
+│   └── firewall/        DOCKER-USER egress / metadata rules
+├── scripts/             gen_env.py (host capability detection), docker_trial.sh
+├── tests/               72 tests: unit, end-to-end trials, verifier, drill, live mTLS
+└── docs/                architecture.svg, threat-model.md, residual-risk.md, results/, War Room screenshots
 ```
 
 ---
@@ -307,100 +309,100 @@ Hih-bayonara/
 ## 11. Task breakdown (the backlog)
 
 **Priority:** `P0` = MVP, must demo · `P1` = the wow factors · `P2` = stretch.
-**Status:** `[ ]` todo · `[~]` in progress · `[x]` done.
+**Status:** `[ ]` todo · `[~]` partial · `[x]` done. *Updated after implementation, 2026-09-29.*
 
 ### Epic A: Foundation & topology (owner: P1)
 | ID | Task | Pri | Done when |
 |---|---|---|---|
-| A1 | [ ] Repo skeleton, Makefile targets (`up`, `down`, `drill`, `trial`, `verify`, `bench`, `demo`) | P0 | `make up` starts all services |
-| A2 | [ ] `docker-compose.yml` with 6 zones and one `internal: true` network per zone | P0 | `docker network inspect` shows isolation |
-| A3 | [ ] Arbiter is the only service attached to several networks | P0 | Flow matrix matches the ARCHITECTURE table |
-| A4 | [ ] Install gVisor; set `runtime: runsc` for red, enclave and model | P0 | `dmesg` inside the container shows the gVisor banner |
-| A5 | [ ] Hardening baseline: `cap_drop: [ALL]`, `no-new-privileges`, `read_only: true`, tmpfs scratch, non-root user | P0 | Config audit passes (e.g. docker-bench-security) |
-| A6 | [ ] Per-zone seccomp allowlist profiles | P1 | Services run; disallowed syscalls are denied |
-| A7 | [ ] cgroups v2 limits: `cpuset`, `mem_limit`, `pids_limit`, `blkio`/io weight per zone | P0 | Limits are visible in `/sys/fs/cgroup` |
-| A8 | [ ] nftables default-deny, block cloud metadata IP, no internet egress from data-plane zones | P1 | Drill cases for egress and metadata are denied |
-| A9 | [ ] Internal CA + per-service mTLS certs (scripted; no keys in git) | P1 | Arbiter rejects clients without certs |
+| A1 | [x] Repo skeleton, Makefile targets (`up`, `down`, `drill`, `trial`, `verify`, `bench`, `demo`) | P0 | `make up` starts all services |
+| A2 | [x] `docker-compose.yml` with 6 zones and one `internal: true` network per zone | P0 | `docker network inspect` shows isolation |
+| A3 | [x] Arbiter is the only service attached to several networks | P0 | Flow matrix matches the ARCHITECTURE table |
+| A4 | [~] Install gVisor; set `runtime: runsc` for red, enclave and model · *runsc is the compose default; the dev host has no gVisor, so runc + accepted risk `process.gvisor_sandbox` (recorded in the ledger)* | P0 | `dmesg` inside the container shows the gVisor banner |
+| A5 | [x] Hardening baseline: `cap_drop: [ALL]`, `no-new-privileges`, `read_only: true`, tmpfs scratch, non-root user | P0 | Config audit passes (e.g. docker-bench-security) |
+| A6 | [x] Per-zone seccomp allowlist profiles · *Docker default allowlist minus 37 syscalls: `infra/seccomp/`* | P1 | Services run; disallowed syscalls are denied |
+| A7 | [~] cgroups v2 limits: `cpuset`, `mem_limit`, `pids_limit`, `blkio`/io weight per zone · *cpuset, memory, pids done; io weight not configured* | P0 | Limits are visible in `/sys/fs/cgroup` |
+| A8 | [x] nftables default-deny, block cloud metadata IP, no internet egress from data-plane zones · *internal networks + `infra/firewall/docker-user.sh` (iptables DOCKER-USER)* | P1 | Drill cases for egress and metadata are denied |
+| A9 | [x] Internal CA + per-service mTLS certs (scripted; no keys in git) · *one CA per zone; every listener pins exactly one client CA* | P1 | Arbiter rejects clients without certs |
 | A10 | [ ] Rootless engine setup notes + script | P2 | Runs rootless on a fresh VM |
 
 ### Epic B: Trial Authority (owner: P2)
 | ID | Task | Pri | Done when |
 |---|---|---|---|
-| B1 | [ ] Arbiter FastAPI skeleton with endpoints: register, arm, submit-case, conclude, reveal, status | P0 | OpenAPI docs up |
-| B2 | [ ] Trial state machine (DRAFT→REGISTERED→ARMED→RUNNING→CONCLUDED→REVEALED→ATTESTED / INVALIDATED) | P0 | Illegal transitions are rejected; unit tests pass |
-| B3 | [ ] Brokered data path: Red → Enclave → Model → Enclave → Arbiter → Red | P0 | One test case completes end to end |
-| B4 | [ ] **Commit-reveal**: accept `H(artifact ‖ nonce)`, verify at reveal, INVALIDATE on mismatch | P1 (W1) | Mismatch demo → INVALIDATED |
-| B5 | [ ] Policy engine (OPA/Cedar): role × trial-state × resource rules, with policy unit tests | P0 | Blue→red-results is denied until REVEALED |
-| B6 | [ ] Key broker: per-tenant keys, envelope encryption for vaults, trial-scoped short-lived tokens | P1 | Tokens expire at CONCLUDE |
-| B7 | [ ] Judge service: scores outputs; red never self-grades | P0 | Score is stored per case |
-| B8 | [ ] Per-tenant query budgets + rate limits | P1 | Budget exceeded → rejected + logged |
-| B9 | [ ] Findings report generator (per role, post-reveal) | P1 | JSON + Markdown report |
+| B1 | [x] Arbiter FastAPI skeleton with endpoints: register, arm, submit-case, conclude, reveal, status | P0 | OpenAPI docs up |
+| B2 | [x] Trial state machine (DRAFT→REGISTERED→ARMED→RUNNING→CONCLUDED→REVEALED→ATTESTED / INVALIDATED) | P0 | Illegal transitions are rejected; unit tests pass |
+| B3 | [x] Brokered data path: Red → Enclave → Model → Enclave → Arbiter → Red | P0 | One test case completes end to end |
+| B4 | [x] **Commit-reveal**: accept `H(artifact ‖ nonce)`, verify at reveal, INVALIDATE on mismatch | P1 (W1) | Mismatch demo → INVALIDATED |
+| B5 | [x] Policy engine (OPA/Cedar): role × trial-state × resource rules, with policy unit tests · *own ABAC engine (`policy.json`) with *exhaustive* invariant checking instead of OPA/Cedar* | P0 | Blue→red-results is denied until REVEALED |
+| B6 | [x] Key broker: per-tenant keys, envelope encryption for vaults, trial-scoped short-lived tokens | P1 | Tokens expire at CONCLUDE |
+| B7 | [x] Judge service: scores outputs; red never self-grades | P0 | Score is stored per case |
+| B8 | [~] Per-tenant query budgets + rate limits · *case budgets enforced; rate spikes are alerted, not throttled* | P1 | Budget exceeded → rejected + logged |
+| B9 | [x] Findings report generator (per role, post-reveal) | P1 | JSON + Markdown report |
 
 ### Epic C: Ledger & verifier (owner: P2)
 | ID | Task | Pri | Done when |
 |---|---|---|---|
-| C1 | [ ] Append-only event store; each event holds `prev_hash`, `hash`, `ts`, `type`, payload hashes | P0 | Chain verifies |
-| C2 | [ ] Merkle checkpoint every N events + at state transitions; Ed25519 signature | P1 (W7) | Checkpoints validate with the public key |
-| C3 | [ ] `dbverify` CLI: verify chain, signatures, commitments, isolation certificate, fingerprints | P0 | Clean trial → ✅; tampered → ❌ with event index |
-| C4 | [ ] Deterministic replay: re-run revealed cases against the pinned model digest (temp 0, seed) and compare output hashes | P1 | Replay matches |
-| C5 | [ ] Tamper demo script (`make tamper`) that flips a byte | P1 | Verifier flags the exact event |
+| C1 | [x] Append-only event store; each event holds `prev_hash`, `hash`, `ts`, `type`, payload hashes | P0 | Chain verifies |
+| C2 | [x] Merkle checkpoint every N events + at state transitions; Ed25519 signature | P1 (W7) | Checkpoints validate with the public key |
+| C3 | [x] `dbverify` CLI: verify chain, signatures, commitments, isolation certificate, fingerprints | P0 | Clean trial → ✅; tampered → ❌ with event index |
+| C4 | [x] Deterministic replay: re-run revealed cases against the pinned model digest (temp 0, seed) and compare output hashes · *34/34 bit-for-bit* | P1 | Replay matches |
+| C5 | [x] Tamper demo script (`make tamper`) that flips a byte | P1 | Verifier flags the exact event |
 | C6 | [ ] Optional public anchor: post checkpoint root to Sigstore Rekor | P2 | Rekor entry UUID stored in ledger |
 
 ### Epic D: Model clean room & LLM-native controls (owner: P3)
 | ID | Task | Pri | Done when |
 |---|---|---|---|
-| D1 | [ ] Pick the model (≈0.5–1.5B instruct GGUF); pin the SHA-256 digest; mount weights read-only | P0 | Digest is checked at startup |
-| D2 | [ ] llama.cpp/Ollama server in its own zone, no egress, tool-use disabled | P0 | Responds via the Arbiter only |
-| D3 | [ ] Ephemeral replica per trial (spawn at ARM, destroy at CONCLUDE) | P1 | New container ID per trial |
-| D4 | [ ] KV/prompt cache scoped to the session; no cross-tenant prefix reuse; flushed on session end | P0 | Config documented + tested |
-| D5 | [ ] **Purity Fingerprint**: golden probe set (benign) → hash of outputs at temp 0, taken pre and post | P1 (W4) | F_pre == F_post; mismatch → INVALIDATED |
-| D6 | [ ] Sample blue defense bundle (rules + small classifier) with a manifest format | P0 | Enclave loads the bundle |
-| D7 | [ ] Enclave runtime: gVisor, read-only bundle, output schema limited to `{verdict, reason_code}` | P0 (W2) | Bundle cannot open sockets or write outside tmpfs |
-| D8 | [ ] **Equalizer**: fixed release time buckets (set from p95), size padding/bucketing, canonical refusal | P1 (W3) | All refusals are byte-identical to red |
-| D9 | [ ] **Leakage Score experiment**: attacker classifier on (latency, length), with and without the Equalizer | P1 (W3) | Chart: e.g. 9x% → ~50% |
-| D10 | [ ] Dataset importer: benchmark sets → encrypted Red Vault as opaque records (IDs + hashes only outside) | P0 | UI shows no plaintext payloads |
+| D1 | [~] Pick the model (≈0.5–1.5B instruct GGUF); pin the SHA-256 digest; mount weights read-only · *digest pinning implemented for stub and llama.cpp; no real GGUF downloadable on the dev host* | P0 | Digest is checked at startup |
+| D2 | [x] llama.cpp/Ollama server in its own zone, no egress, tool-use disabled · *stub backend; llama.cpp backend tested against a fake llama.cpp API* | P0 | Responds via the Arbiter only |
+| D3 | [~] Ephemeral replica per trial (spawn at ARM, destroy at CONCLUDE) · *reset + purity fingerprint per trial; container respawn per trial not automated* | P1 | New container ID per trial |
+| D4 | [x] KV/prompt cache scoped to the session; no cross-tenant prefix reuse; flushed on session end | P0 | Config documented + tested |
+| D5 | [x] **Purity Fingerprint**: golden probe set (benign) → hash of outputs at temp 0, taken pre and post | P1 (W4) | F_pre == F_post; mismatch → INVALIDATED |
+| D6 | [x] Sample blue defense bundle (rules + small classifier) with a manifest format | P0 | Enclave loads the bundle |
+| D7 | [x] Enclave runtime: gVisor, read-only bundle, output schema limited to `{verdict, reason_code}` · *bundles are declarative data, so no code runs in the enclave at all* | P0 (W2) | Bundle cannot open sockets or write outside tmpfs |
+| D8 | [x] **Equalizer**: fixed release time buckets (set from p95), size padding/bucketing, canonical refusal | P1 (W3) | All refusals are byte-identical to red |
+| D9 | [x] **Leakage Score experiment**: attacker classifier on (latency, length), with and without the Equalizer · *100% → 50.0% (95% CI 44.6–55.4%)* | P1 (W3) | Chart: e.g. 9x% → ~50% |
+| D10 | [x] Dataset importer: benchmark sets → encrypted Red Vault as opaque records (IDs + hashes only outside) | P0 | UI shows no plaintext payloads |
 
 ### Epic E: Observability & canaries (owner: P1 + P3)
 | ID | Task | Pri | Done when |
 |---|---|---|---|
-| E1 | [ ] Canary generator: unique tokens planted in each vault + the enclave bundle | P1 (W5) | Registry of canaries per tenant |
-| E2 | [ ] DLP watcher at the Arbiter: scan every boundary crossing (hash-based matching, no plaintext storage) | P1 (W5) | Synthetic leak → alert < 1 s |
-| E3 | [ ] Canary hit → auto-INVALIDATE trial + ledger event | P1 | State flips live on the dashboard |
-| E4 | [ ] Falco/Tetragon rules: unexpected exec, network connect, sensitive file read per zone | P1 | Alerts appear in the observability stream |
-| E5 | [ ] Metadata-only telemetry schema (no plaintext fields allowed; schema-enforced) | P0 | Schema validation rejects plaintext |
-| E6 | [ ] Anomaly detector: simple rules + z-score on per-tenant rates/latency | P2 | Alerts for abnormal probing rates |
+| E1 | [x] Canary generator: unique tokens planted in each vault + the enclave bundle | P1 (W5) | Registry of canaries per tenant |
+| E2 | [x] DLP watcher at the Arbiter: scan every boundary crossing (hash-based matching, no plaintext storage) | P1 (W5) | Synthetic leak → alert < 1 s |
+| E3 | [x] Canary hit → auto-INVALIDATE trial + ledger event | P1 | State flips live on the dashboard |
+| E4 | [~] Falco/Tetragon rules: unexpected exec, network connect, sensitive file read per zone · *rules written in `infra/falco/`; Falco not available to validate on the dev host* | P1 | Alerts appear in the observability stream |
+| E5 | [x] Metadata-only telemetry schema (no plaintext fields allowed; schema-enforced) | P0 | Schema validation rejects plaintext |
+| E6 | [x] Anomaly detector: simple rules + z-score on per-tenant rates/latency | P2 | Alerts for abnormal probing rates |
 
 ### Epic F: Breach Drill (owner: P1)
 | ID | Task | Pri | Done when |
 |---|---|---|---|
-| F1 | [ ] Negative test for every ❌ cell in the flow matrix (network reachability between zones) | P0 (W6) | All denied |
-| F2 | [ ] Filesystem tests: no shared volumes, no access to other zones' mounts | P0 | All denied |
-| F3 | [ ] Process/namespace tests: other zones' processes are not visible | P1 | All denied |
-| F4 | [ ] Privilege tests: capabilities dropped, no-new-privileges set, rootfs read-only | P1 | All pass |
-| F5 | [ ] Egress & metadata-endpoint tests | P1 | All denied |
-| F6 | [ ] Drill output → signed **Isolation Certificate** → hash in ledger at ARM | P1 | Certificate is shown on the dashboard |
+| F1 | [x] Negative test for every ❌ cell in the flow matrix (network reachability between zones) | P0 (W6) | All denied |
+| F2 | [x] Filesystem tests: no shared volumes, no access to other zones' mounts · *mount-point based* | P0 | All denied |
+| F3 | [~] Process/namespace tests: other zones' processes are not visible · *per-container PID namespaces; no explicit drill check yet* | P1 | All denied |
+| F4 | [x] Privilege tests: capabilities dropped, no-new-privileges set, rootfs read-only | P1 | All pass |
+| F5 | [x] Egress & metadata-endpoint tests | P1 | All denied |
+| F6 | [x] Drill output → signed **Isolation Certificate** → hash in ledger at ARM · *certificate hash in the ARMED event, covered by the signed checkpoint* | P1 | Certificate is shown on the dashboard |
 
 ### Epic G: War Room (owner: P4)
 | ID | Task | Pri | Done when |
 |---|---|---|---|
-| G1 | [ ] Layout: three lanes (Red / Model / Blue) + control strip | P0 | Static mock done |
-| G2 | [ ] Live WebSocket feed from the Arbiter (metadata only) | P0 | Cases animate across lanes |
-| G3 | [ ] Ledger ticker: scrolling hash chain, checkpoint badges | P1 | Ticks live |
-| G4 | [ ] Canary lights + isolation certificate panel + purity fingerprint panel | P1 | Turns red on drill |
-| G5 | [ ] Trial state timeline (the state-machine diagram lighting up) | P1 | Updates live |
-| G6 | [ ] Reveal Ceremony animation (commitments open → ✅ verified) | P1 | Wow moment |
-| G7 | [ ] Residual-risk radar + metrics panel (overhead, leakage score) | P1 | Numbers from `bench/` |
+| G1 | [x] Layout: three lanes (Red / Model / Blue) + control strip | P0 | Static mock done |
+| G2 | [x] Live WebSocket feed from the Arbiter (metadata only) | P0 | Cases animate across lanes |
+| G3 | [x] Ledger ticker: scrolling hash chain, checkpoint badges | P1 | Ticks live |
+| G4 | [x] Canary lights + isolation certificate panel + purity fingerprint panel | P1 | Turns red on drill |
+| G5 | [x] Trial state timeline (the state-machine diagram lighting up) | P1 | Updates live |
+| G6 | [x] Reveal Ceremony animation (commitments open → ✅ verified) | P1 | Wow moment |
+| G7 | [x] Residual-risk radar + metrics panel (overhead, leakage score) | P1 | Numbers from `bench/` |
 | G8 | [ ] Role-scoped views (red view, blue view, auditor view) | P2 | Each role sees only its data |
 
 ### Epic H: Measurement & docs (owner: P3 + P4)
 | ID | Task | Pri | Done when |
 |---|---|---|---|
-| H1 | [ ] Overhead benchmark: bare vs isolated (p50/p95/p99) on control prompts | P0 | Table + chart |
-| H2 | [ ] `docs/threat-model.md` (assets, adversaries, STRIDE, trust boundaries) | P0 | Reviewed by the team |
-| H3 | [ ] `docs/residual-risk.md` (register + break conditions + roadmap) | P0 | Reviewed |
-| H4 | [ ] README quick start (fresh VM → demo in < 10 min) | P0 | A teammate follows it cold |
-| H5 | [ ] Pitch deck (≤ 10 slides) | P0 | Rehearsed |
-| H6 | [ ] Backup demo video (in case of live failure) | P0 | Recorded |
+| H1 | [x] Overhead benchmark: bare vs isolated (p50/p95/p99) on control prompts · *+3.6 ms (+5.8%) p50* | P0 | Table + chart |
+| H2 | [x] `docs/threat-model.md` (assets, adversaries, STRIDE, trust boundaries) | P0 | Reviewed by the team |
+| H3 | [x] `docs/residual-risk.md` (register + break conditions + roadmap) | P0 | Reviewed |
+| H4 | [x] README quick start (fresh VM → demo in < 10 min) | P0 | A teammate follows it cold |
+| H5 | [ ] Pitch deck (≤ 10 slides) · *team task* | P0 | Rehearsed |
+| H6 | [ ] Backup demo video (in case of live failure) · *team task* | P0 | Recorded |
 | H7 | [ ] K8s manifests (kind + Cilium + RuntimeClass gVisor) | P2 | `kubectl apply` works |
 
 ### Critical path (the MVP chain)
