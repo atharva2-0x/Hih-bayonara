@@ -1,0 +1,232 @@
+{
+  "description": "Single source of truth for allowed/forbidden paths. Mirrors the flow matrix in ARCHITECTURE.md and the static IPs in docker-compose.yml.",
+  "targets": {
+    "arbiter-red": {
+      "host": "10.77.1.10",
+      "port": 8443
+    },
+    "arbiter-blue": {
+      "host": "10.77.2.10",
+      "port": 8443
+    },
+    "arbiter-alerts": {
+      "host": "10.77.5.10",
+      "port": 8444
+    },
+    "arbiter-operator": {
+      "host": "10.77.9.10",
+      "port": 8100
+    },
+    "enclave": {
+      "host": "10.77.3.20",
+      "port": 8300
+    },
+    "model-data": {
+      "host": "10.77.4.20",
+      "port": 8210
+    },
+    "model-admin": {
+      "host": "10.77.4.20",
+      "port": 8211
+    },
+    "obs": {
+      "host": "10.77.5.20",
+      "port": 8500
+    },
+    "internet": {
+      "host": "1.1.1.1",
+      "port": 443
+    },
+    "cloud-metadata": {
+      "host": "169.254.169.254",
+      "port": 80
+    },
+    "operator-via-red-net": {
+      "host": "10.77.1.10",
+      "port": 8100
+    },
+    "operator-via-blue-net": {
+      "host": "10.77.2.10",
+      "port": 8100
+    },
+    "operator-via-enclave-net": {
+      "host": "10.77.3.10",
+      "port": 8100
+    },
+    "operator-via-model-net": {
+      "host": "10.77.4.10",
+      "port": 8100
+    },
+    "operator-via-observability-net": {
+      "host": "10.77.5.10",
+      "port": 8100
+    },
+    "arbiter-via-enclave-net": {
+      "host": "10.77.3.10",
+      "port": 8443
+    },
+    "arbiter-via-model-net": {
+      "host": "10.77.4.10",
+      "port": 8443
+    }
+  },
+  "zones": {
+    "red": {
+      "allow": [
+        "arbiter-red"
+      ],
+      "deny": [
+        "arbiter-blue",
+        "arbiter-alerts",
+        "arbiter-operator",
+        "enclave",
+        "model-data",
+        "model-admin",
+        "obs",
+        "internet",
+        "cloud-metadata",
+        "operator-via-red-net"
+      ],
+      "tls_allow": [
+        "arbiter-red"
+      ],
+      "dns_deny": [
+        "enclave",
+        "model",
+        "obs",
+        "blue-workbench"
+      ],
+      "forbidden_paths": [
+        "/vault/blue",
+        "/state/blue",
+        "/keys/authority",
+        "/var/lib/doubleblind"
+      ]
+    },
+    "blue": {
+      "allow": [
+        "arbiter-blue"
+      ],
+      "deny": [
+        "arbiter-red",
+        "arbiter-alerts",
+        "arbiter-operator",
+        "enclave",
+        "model-data",
+        "model-admin",
+        "obs",
+        "internet",
+        "cloud-metadata",
+        "operator-via-blue-net"
+      ],
+      "tls_allow": [
+        "arbiter-blue"
+      ],
+      "dns_deny": [
+        "enclave",
+        "model",
+        "obs",
+        "red-runner"
+      ],
+      "forbidden_paths": [
+        "/vault/red",
+        "/state/red",
+        "/keys/authority",
+        "/var/lib/doubleblind"
+      ]
+    },
+    "enclave": {
+      "allow": [
+        "model-data"
+      ],
+      "deny": [
+        "arbiter-red",
+        "arbiter-blue",
+        "arbiter-alerts",
+        "arbiter-operator",
+        "obs",
+        "internet",
+        "cloud-metadata",
+        "operator-via-enclave-net",
+        "arbiter-via-enclave-net"
+      ],
+      "tls_allow": [
+        "model-data"
+      ],
+      "tls_deny": [
+        "model-admin"
+      ],
+      "dns_deny": [
+        "obs",
+        "red-runner",
+        "blue-workbench"
+      ],
+      "forbidden_paths": [
+        "/vault/red",
+        "/vault/blue",
+        "/state/red",
+        "/state/blue",
+        "/keys/authority"
+      ]
+    },
+    "model": {
+      "allow": [],
+      "deny": [
+        "arbiter-red",
+        "arbiter-blue",
+        "arbiter-alerts",
+        "arbiter-operator",
+        "enclave",
+        "obs",
+        "internet",
+        "cloud-metadata",
+        "operator-via-model-net",
+        "arbiter-via-model-net"
+      ],
+      "dns_deny": [
+        "obs",
+        "red-runner",
+        "blue-workbench"
+      ],
+      "forbidden_paths": [
+        "/vault/red",
+        "/vault/blue",
+        "/state/red",
+        "/state/blue",
+        "/keys/authority"
+      ]
+    },
+    "observability": {
+      "allow": [
+        "arbiter-alerts"
+      ],
+      "deny": [
+        "arbiter-red",
+        "arbiter-blue",
+        "arbiter-operator",
+        "enclave",
+        "model-data",
+        "model-admin",
+        "internet",
+        "cloud-metadata",
+        "operator-via-observability-net"
+      ],
+      "tls_allow": [
+        "arbiter-alerts"
+      ],
+      "dns_deny": [
+        "enclave",
+        "model",
+        "red-runner",
+        "blue-workbench"
+      ],
+      "forbidden_paths": [
+        "/vault/red",
+        "/vault/blue",
+        "/state/red",
+        "/state/blue",
+        "/keys/authority"
+      ]
+    }
+  }
+}

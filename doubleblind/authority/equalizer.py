@@ -61,13 +61,17 @@ class Equalizer:
         top = self.cfg.size_buckets[-1]
         return top * math.ceil(size / top)
 
-    def shape(self, answered: bool, text: str | None) -> dict:
-        """Build the red-visible response. ``text`` is the answer if answered,
-        or the raw refusal/block message otherwise (only shown when disabled)."""
+    def shape(self, answered: bool, text: str | None, extra: dict | None = None) -> dict:
+        """Build the complete red-visible response body. ``text`` is the answer
+        if answered, or the raw refusal/block message otherwise (only shown
+        when disabled). ``extra`` fields are included *before* padding: every
+        byte red receives must count toward the bucket, or a field of variable
+        width becomes a side channel."""
         if not self.cfg.enabled:
-            return {"status": "ANSWERED" if answered else "REFUSED", "text": text or ""}
+            return {**(extra or {}), "status": "ANSWERED" if answered else "REFUSED", "text": text or ""}
         view = {"status": "ANSWERED", "text": text or ""} if answered else {
             "status": "REFUSED", "text": self.cfg.canonical_refusal}
+        view = {**(extra or {}), **view}
         base = len(canonical_json({**view, "pad": ""}))
         view["pad"] = " " * (self._target_size(base) - base)
         return view

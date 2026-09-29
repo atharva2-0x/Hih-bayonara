@@ -76,8 +76,8 @@ class Trial:
     f_post: str | None = None
     # run
     case_count: int = 0
-    case_commits: list[str] = field(default_factory=list)
-    sealed_records: list[str] = field(default_factory=list)
+    case_commits: dict[int, str] = field(default_factory=dict)
+    sealed_records: dict[int, str] = field(default_factory=dict)
     leaks_contained: int = 0
     # reveal
     reveals: dict[str, dict[str, Any]] = field(default_factory=dict)
