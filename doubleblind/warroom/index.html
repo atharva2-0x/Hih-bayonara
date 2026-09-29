@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DOUBLE-BLIND War Room</title>
+<link rel="stylesheet" href="/static/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b1020'/%3E%3Cpath d='M9 16h14M16 9v14' stroke='%23f5c542' stroke-width='3'/%3E%3C/svg%3E">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <span class="logo">DOUBLE-BLIND</span>
+    <span class="sub">War Room · operator view · payloads are never shown here, only IDs and hashes</span>
+  </div>
+  <div class="meta">
+    <label class="follow"><input type="checkbox" id="follow" checked> follow latest</label>
+    <select id="trialSel" aria-label="trial"></select>
+    <span class="chip mono" id="ledgerHead" title="ledger head">ledger —</span>
+    <span class="dot" id="conn" title="event stream"></span>
+  </div>
+</header>
+
+<section class="timeline" id="timeline" aria-label="trial state"></section>
+<div class="banner" id="banner" hidden></div>
+
+<section class="controls" id="controls">
+  <button data-scenario="standard" class="primary">▶ Run blinded trial</button>
+  <button data-scenario="canary">🐤 Canary drill</button>
+  <button data-scenario="contamination">🧪 Contamination</button>
+  <button id="tamperBtn">✂ Tamper test</button>
+  <label class="toggle"><input type="checkbox" id="eqToggle" checked> Equalizer on for next run</label>
+  <span class="hint" id="demoHint"></span>
+</section>
+
+<main class="grid">
+  <section class="panel lanes">
+    <div class="lane red">
+      <h2>RED ZONE <small>sees equalized responses only</small></h2>
+      <div class="stat"><b id="redSent">0</b> cases submitted</div>
+      <div class="chips" id="redLane"></div>
+    </div>
+    <div class="lane mid">
+      <h2>ENCLAVE + MODEL <small>clean room · sealed</small></h2>
+      <div class="stat"><b id="midSealed">0</b> sealed records · <b id="midContained">0</b> leaks contained</div>
+      <div class="chips" id="midLane"></div>
+    </div>
+    <div class="lane blue">
+      <h2>BLUE ZONE <small>blind until REVEAL</small></h2>
+      <div id="blueSealed" class="sealed">
+        <div class="lock">🔒</div>
+        <div>defense running sealed in the enclave</div>
+        <div class="bars"><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div id="blueRevealed" hidden></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Trial Ledger <small id="ledgerVerify"></small></h2>
+    <ol class="ticker mono" id="ticker"></ol>
+  </section>
+
+  <section class="panel">
+    <h2>Isolation Certificate</h2>
+    <div id="cert" class="muted">not armed yet</div>
+  </section>
+
+  <section class="panel">
+    <h2>Model Purity</h2>
+    <div class="purity">
+      <div><span class="k">F_pre</span><span class="mono" id="fpre">—</span></div>
+      <div><span class="k">F_post</span><span class="mono" id="fpost">—</span></div>
+      <div class="verdict" id="purityVerdict"></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Leakage Canaries</h2>
+    <div class="canaries">
+      <div class="light" id="lightRed"><span></span>red canary</div>
+      <div class="light" id="lightBlue"><span></span>blue canary</div>
+    </div>
+    <ul class="alerts" id="alerts"></ul>
+  </section>
+
+  <section class="panel wide">
+    <h2>Proof, not promises <small>measured, with 95% confidence intervals</small></h2>
+    <div class="metrics" id="metrics"></div>
+  </section>
+
+  <section class="panel">
+    <h2>Residual Risk <small>likelihood × impact</small></h2>
+    <svg id="radar" viewBox="0 0 300 300" role="img" aria-label="residual risk radar"></svg>
+  </section>
+
+  <section class="panel">
+    <h2>Narration</h2>
+    <ol class="log" id="log"></ol>
+    <div id="tamper" class="tamper" hidden></div>
+  </section>
+</main>
+<footer class="foot">policy <span class="mono" id="policyHash">—</span> · <span id="policyInv"></span></footer>
+<script src="/static/app.js"></script>
+</body>
+</html>
