@@ -1,0 +1,35 @@
+{
+ "benchmark": "isolation overhead",
+ "environment": "local-sim (stub model, in-process zones)",
+ "prompts": 55,
+ "bucket_ms": 150,
+ "bare": {
+  "n": 55,
+  "p50": 61.73,
+  "p95": 122.09,
+  "mean": 67.78
+ },
+ "isolated": {
+  "n": 55,
+  "p50": 65.32,
+  "p95": 126.48,
+  "mean": 72.19
+ },
+ "equalized": {
+  "n": 55,
+  "p50": 152.33,
+  "p95": 153.75,
+  "mean": 152.54
+ },
+ "added_ms": {
+  "isolated_p50": 3.59,
+  "isolated_p95": 4.39
+ },
+ "overhead_pct": {
+  "isolated_p50": 5.8,
+  "isolated_p95": 3.6,
+  "equalized_p50": 146.8,
+  "equalized_p95": 25.9
+ },
+ "note": "Equalizer cost is by design: every response waits for its time bucket. Size bucket_ms from the model's measured p95 so answers rarely spill into a second bucket."
+}

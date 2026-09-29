@@ -27,17 +27,19 @@ def package_bundle(template: str | Path = SAMPLE_BUNDLE) -> tuple[bytes, str]:
 
 
 class BlueClient:
-    def __init__(self, http: httpx.AsyncClient, state_dir: str | Path, template: str | Path = SAMPLE_BUNDLE):
+    def __init__(self, http: httpx.AsyncClient, state_dir: str | Path, template: str | Path = SAMPLE_BUNDLE,
+                 fixed_bundle: tuple[bytes, str] | None = None):
         self.http = http
         self.state = Path(state_dir)
         self.state.mkdir(parents=True, exist_ok=True)
         self.template = Path(template)
+        self.fixed_bundle = fixed_bundle  # (bundle_bytes, canary): reuse one package across trials (benchmarks)
 
     def _f(self, trial_id: str) -> Path:
         return self.state / f"{trial_id}.json"
 
     async def commit(self, trial_id: str) -> dict:
-        bundle, canary = package_bundle(self.template)
+        bundle, canary = self.fixed_bundle or package_bundle(self.template)
         nonce = random_hex(32)
         self._f(trial_id).write_text(json.dumps({"nonce": nonce, "bundle_b64": base64.b64encode(bundle).decode()}))
         return _check(await self.http.post(f"/v1/trials/{trial_id}/commitment", json={

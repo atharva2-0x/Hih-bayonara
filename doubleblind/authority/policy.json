@@ -22,7 +22,7 @@
     {"id": "A10", "effect": "allow", "roles": ["red", "blue", "auditor", "operator"], "actions": ["report:read"], "states": ["REVEALED", "ATTESTED"]},
     {"id": "A11", "effect": "allow", "roles": ["blue", "auditor"], "actions": ["red_cases:read"], "states": ["REVEALED", "ATTESTED"]},
     {"id": "A12", "effect": "allow", "roles": ["red", "auditor"], "actions": ["blue_bundle:read"], "states": ["REVEALED", "ATTESTED"]},
-    {"id": "A13", "effect": "allow", "roles": ["red", "blue", "auditor"], "actions": ["verdicts:read"], "states": ["REVEALED", "ATTESTED"]},
+    {"id": "A13", "effect": "allow", "roles": ["red", "blue", "auditor", "operator"], "actions": ["verdicts:read"], "states": ["REVEALED", "ATTESTED"]},
     {"id": "A14", "effect": "allow", "roles": ["operator", "auditor"], "actions": ["ledger:read", "metadata:read"], "states": "*"},
     {"id": "A15", "effect": "allow", "roles": ["red", "blue"], "actions": ["ledger:read"], "states": ["REVEALED", "ATTESTED", "INVALIDATED"]},
     {"id": "A16", "effect": "allow", "roles": ["operator", "auditor"], "actions": ["export:read"], "states": ["REVEALED", "ATTESTED", "INVALIDATED"]},
