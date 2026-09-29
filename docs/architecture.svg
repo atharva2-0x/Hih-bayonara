@@ -1,0 +1,263 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1720" height="1070" viewBox="0 0 1720 1070">
+<title>DOUBLE-BLIND architecture</title>
+<defs>
+<marker id="arr-w" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#e6e9f2"/></marker>
+<marker id="arr-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f5c542"/></marker>
+<marker id="arr-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ff6b6b"/></marker>
+<marker id="arr-m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9aa4bf"/></marker>
+<marker id="arr-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4da3ff"/></marker>
+<pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0 L0 0 0 32" fill="none" stroke="#ffffff" stroke-opacity="0.035" stroke-width="1"/></pattern>
+</defs>
+<rect width="1720" height="1070" fill="#0b1020"/>
+<rect width="1720" height="1070" fill="url(#grid)"/>
+<text x="30" y="52" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="30" fill="#e6e9f2" font-weight="800" text-anchor="start" letter-spacing="2">DOUBLE-BLIND</text>
+<text x="30" y="80" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#9aa4bf" font-weight="normal" text-anchor="start">Isolation for Bayora&#x27;s red-team / blue-team AI safety testing, built to clinical-trial standards  ·  Hack in Hills &#x27;26 · Track 04</text>
+<rect x="1237.56" y="42" width="94.1" height="24" rx="12.0" fill="#f5c542" fill-opacity="0.12" stroke="#f5c542" stroke-opacity="0.7"/>
+<text x="1284.62" y="57.78" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="10.5" fill="#f5c542" font-weight="600" text-anchor="middle">PRE-REGISTER</text>
+<text x="1338.6799999999998" y="58" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="16" fill="#f5c542" font-weight="700" text-anchor="middle">›</text>
+<rect x="1345.6799999999998" y="42" width="35.5" height="24" rx="12.0" fill="#f5c542" fill-opacity="0.12" stroke="#f5c542" stroke-opacity="0.7"/>
+<text x="1363.445" y="57.78" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="10.5" fill="#f5c542" font-weight="600" text-anchor="middle">ARM</text>
+<text x="1388.2099999999998" y="58" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="16" fill="#f5c542" font-weight="700" text-anchor="middle">›</text>
+<rect x="1395.2099999999998" y="42" width="74.6" height="24" rx="12.0" fill="#f5c542" fill-opacity="0.12" stroke="#f5c542" stroke-opacity="0.7"/>
+<text x="1432.5049999999999" y="57.78" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="10.5" fill="#f5c542" font-weight="600" text-anchor="middle">BLIND RUN</text>
+<text x="1476.7999999999997" y="58" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="16" fill="#f5c542" font-weight="700" text-anchor="middle">›</text>
+<rect x="1483.7999999999997" y="42" width="68.1" height="24" rx="12.0" fill="#f5c542" fill-opacity="0.12" stroke="#f5c542" stroke-opacity="0.7"/>
+<text x="1517.8399999999997" y="57.78" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="10.5" fill="#f5c542" font-weight="600" text-anchor="middle">CONCLUDE</text>
+<text x="1558.8799999999997" y="58" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="16" fill="#f5c542" font-weight="700" text-anchor="middle">›</text>
+<rect x="1565.8799999999997" y="42" width="55.1" height="24" rx="12.0" fill="#f5c542" fill-opacity="0.12" stroke="#f5c542" stroke-opacity="0.7"/>
+<text x="1593.4099999999996" y="57.78" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="10.5" fill="#f5c542" font-weight="600" text-anchor="middle">REVEAL</text>
+<text x="1627.9399999999996" y="58" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="16" fill="#f5c542" font-weight="700" text-anchor="middle">›</text>
+<rect x="1634.9399999999996" y="42" width="55.1" height="24" rx="12.0" fill="#f5c542" fill-opacity="0.12" stroke="#f5c542" stroke-opacity="0.7"/>
+<text x="1662.4699999999996" y="57.78" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="10.5" fill="#f5c542" font-weight="600" text-anchor="middle">ATTEST</text>
+<rect x="30" y="110" width="320" height="300" rx="14" fill="#ff6b6b" fill-opacity="0.07" stroke="#ff6b6b" stroke-width="1.6"/>
+<text x="48" y="138" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#ff6b6b" font-weight="700" text-anchor="start" letter-spacing="1.2">RED ZONE · TENANT A</text>
+<text x="48" y="156" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="start">net-red · gVisor · cores 2-3</text>
+<rect x="55" y="175" width="270" height="70" rx="10" fill="#121a33" stroke="#ff6b6b" stroke-width="1.4"/>
+<text x="190.0" y="205.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#e6e9f2" font-weight="700" text-anchor="middle">Red Runner</text>
+<text x="190.0" y="223.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">attack harness · adaptive mode</text>
+<path d="M60.0,280 L60.0,350 A130.0,12 0 0 0 320.0,350 L320.0,280" fill="#121a33" stroke="#ff6b6b" stroke-width="1.4"/>
+<ellipse cx="190" cy="280" rx="130.0" ry="12" fill="#121a33" stroke="#ff6b6b" stroke-width="1.4"/>
+<text x="190" y="314" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#e6e9f2" font-weight="700" text-anchor="middle">Red Vault</text>
+<text x="190" y="332" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">benchmark sets · sealed with K_red</text>
+<path d="M190,278 L190,249" fill="none" stroke="#9aa4bf" stroke-width="1.2" stroke-dasharray="6 5" marker-end="url(#arr-m)"/>
+<text x="200" y="263" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="10.5" fill="#9aa4bf" font-weight="normal" text-anchor="start">trial token</text>
+<rect x="48" y="376" width="113.0" height="22" rx="11.0" fill="#ff6b6b" fill-opacity="0.12" stroke="#ff6b6b" stroke-opacity="0.7"/>
+<text x="104.5" y="390.6" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="10" fill="#ff6b6b" font-weight="600" text-anchor="middle">◆ canary R-7f3a</text>
+<line x1="190" y1="413" x2="190" y2="447" stroke="#ff6b6b" stroke-width="1.6" stroke-dasharray="4 4"/>
+<circle cx="190" cy="430" r="10" fill="#0b1020" stroke="#ff6b6b" stroke-width="1.6"/>
+<text x="190" y="434.5" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" fill="#ff6b6b" font-weight="700" text-anchor="middle">✕</text>
+<text x="208" y="434" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="11" fill="#ff6b6b" font-weight="600" text-anchor="start">no path, ever</text>
+<rect x="30" y="450" width="320" height="280" rx="14" fill="#4da3ff" fill-opacity="0.07" stroke="#4da3ff" stroke-width="1.6"/>
+<text x="48" y="478" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#4da3ff" font-weight="700" text-anchor="start" letter-spacing="1.2">BLUE ZONE · TENANT B</text>
+<text x="48" y="496" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="start">net-blue · cores 4-5</text>
+<rect x="55" y="512" width="270" height="70" rx="10" fill="#121a33" stroke="#4da3ff" stroke-width="1.4"/>
+<text x="190.0" y="542.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#e6e9f2" font-weight="700" text-anchor="middle">Blue Workbench</text>
+<text x="190.0" y="560.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">author + package defense bundles</text>
+<path d="M60.0,610 L60.0,680 A130.0,12 0 0 0 320.0,680 L320.0,610" fill="#121a33" stroke="#4da3ff" stroke-width="1.4"/>
+<ellipse cx="190" cy="610" rx="130.0" ry="12" fill="#121a33" stroke="#4da3ff" stroke-width="1.4"/>
+<text x="190" y="644" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#e6e9f2" font-weight="700" text-anchor="middle">Blue Vault</text>
+<text x="190" y="662" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">bundles + classifier weights · K_blue</text>
+<rect x="48" y="700" width="113.0" height="22" rx="11.0" fill="#4da3ff" fill-opacity="0.12" stroke="#4da3ff" stroke-opacity="0.7"/>
+<text x="104.5" y="714.6" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="10" fill="#4da3ff" font-weight="600" text-anchor="middle">◆ canary B-21c9</text>
+<rect x="410" y="110" width="600" height="620" rx="14" fill="#f5c542" fill-opacity="0.07" stroke="#f5c542" stroke-width="1.6"/>
+<text x="428" y="138" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#f5c542" font-weight="700" text-anchor="start" letter-spacing="1.2">TRIAL AUTHORITY · CONTROL PLANE</text>
+<text x="428" y="156" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="start">net-ctrl · only multi-homed service · cores 0-1</text>
+<polygon points="560,240 590,188 830,188 860,240 830,292 590,292" fill="#121a33" stroke="#f5c542" stroke-width="2.2"/>
+<text x="710" y="230" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="19" fill="#f5c542" font-weight="800" text-anchor="middle" letter-spacing="2">ARBITER</text>
+<text x="710" y="253" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" fill="#e6e9f2" font-weight="normal" text-anchor="middle">trial state machine + sole message broker</text>
+<text x="710" y="272" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle" font-style="italic">every cross-zone byte passes through here</text>
+<rect x="428" y="330" width="132" height="78" rx="10" fill="#121a33" stroke="#f5c542" stroke-width="1.4"/>
+<text x="494.0" y="355.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#e6e9f2" font-weight="700" text-anchor="middle">Equalizer</text>
+<text x="494.0" y="373.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">time + size buckets</text>
+<text x="494.0" y="391.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">canonical refusals</text>
+<rect x="572" y="330" width="132" height="78" rx="10" fill="#121a33" stroke="#f5c542" stroke-width="1.4"/>
+<text x="638.0" y="355.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#e6e9f2" font-weight="700" text-anchor="middle">Policy Engine</text>
+<text x="638.0" y="373.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">OPA / Cedar ABAC</text>
+<text x="638.0" y="391.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">role × state × time</text>
+<rect x="716" y="330" width="132" height="78" rx="10" fill="#121a33" stroke="#f5c542" stroke-width="1.4"/>
+<text x="782.0" y="355.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#e6e9f2" font-weight="700" text-anchor="middle">Key Broker</text>
+<text x="782.0" y="373.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">per-tenant keys</text>
+<text x="782.0" y="391.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">trial-scoped tokens</text>
+<rect x="860" y="330" width="132" height="78" rx="10" fill="#121a33" stroke="#f5c542" stroke-width="1.4"/>
+<text x="926.0" y="355.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#e6e9f2" font-weight="700" text-anchor="middle">Judge</text>
+<text x="926.0" y="373.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">independent scoring</text>
+<text x="926.0" y="391.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">red never self-grades</text>
+<rect x="428" y="428" width="276" height="70" rx="10" fill="#121a33" stroke="#f5c542" stroke-width="1.4"/>
+<text x="566.0" y="458.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#e6e9f2" font-weight="700" text-anchor="middle">Commit-Reveal Registry</text>
+<text x="566.0" y="476.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">C = H(artifact ‖ nonce) · opened at REVEAL</text>
+<rect x="716" y="428" width="276" height="70" rx="10" fill="#121a33" stroke="#f5c542" stroke-width="1.4"/>
+<text x="854.0" y="458.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#e6e9f2" font-weight="700" text-anchor="middle">Breach Drill</text>
+<text x="854.0" y="476.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">tests every forbidden path → Isolation Cert</text>
+<rect x="428.0" y="514" width="86" height="24" rx="12" fill="#f5c542" fill-opacity="0.12" stroke="#f5c542" stroke-opacity="0.6"/>
+<text x="471.0" y="530" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="9.5" fill="#f5c542" font-weight="700" text-anchor="middle">REGISTERED</text>
+<rect x="523.6" y="514" width="86" height="24" rx="12" fill="#f5c542" fill-opacity="0.12" stroke="#f5c542" stroke-opacity="0.6"/>
+<text x="566.6" y="530" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="9.5" fill="#f5c542" font-weight="700" text-anchor="middle">ARMED</text>
+<rect x="619.2" y="514" width="86" height="24" rx="12" fill="#f5c542" fill-opacity="0.12" stroke="#f5c542" stroke-opacity="0.6"/>
+<text x="662.2" y="530" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="9.5" fill="#f5c542" font-weight="700" text-anchor="middle">RUNNING</text>
+<rect x="714.8" y="514" width="86" height="24" rx="12" fill="#f5c542" fill-opacity="0.12" stroke="#f5c542" stroke-opacity="0.6"/>
+<text x="757.8" y="530" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="9.5" fill="#f5c542" font-weight="700" text-anchor="middle">CONCLUDED</text>
+<rect x="810.4" y="514" width="86" height="24" rx="12" fill="#f5c542" fill-opacity="0.12" stroke="#f5c542" stroke-opacity="0.6"/>
+<text x="853.4" y="530" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="9.5" fill="#f5c542" font-weight="700" text-anchor="middle">REVEALED</text>
+<rect x="906.0" y="514" width="86" height="24" rx="12" fill="#f5c542" fill-opacity="0.12" stroke="#f5c542" stroke-opacity="0.6"/>
+<text x="949.0" y="530" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="9.5" fill="#f5c542" font-weight="700" text-anchor="middle">ATTESTED</text>
+<text x="724" y="560" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="11" fill="#ff6b6b" font-weight="600" text-anchor="start">↯ canary hit · policy violation ·</text>
+<text x="724" y="576" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="11" fill="#ff6b6b" font-weight="600" text-anchor="start">  drift · mismatch → INVALIDATED</text>
+<text x="698" y="568" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="11" fill="#f5c542" font-weight="600" text-anchor="end">append every event</text>
+<path d="M428.0,604 L428.0,688 A282.0,13 0 0 0 992.0,688 L992.0,604" fill="#121a33" stroke="#f5c542" stroke-width="1.4"/>
+<ellipse cx="710" cy="604" rx="282.0" ry="13" fill="#121a33" stroke="#f5c542" stroke-width="1.4"/>
+<text x="710" y="632" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" fill="#f5c542" font-weight="800" text-anchor="middle" letter-spacing="1.5">TRIAL LEDGER</text>
+<text x="710" y="650" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">SHA-256 hash chain · Merkle checkpoints · Ed25519 signatures</text>
+<rect x="499" y="662" width="70" height="20" rx="4" fill="#0b1020" stroke="#f5c542" stroke-opacity="0.6"/>
+<text x="534" y="676" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="9.5" fill="#e6e9f2" font-weight="normal" text-anchor="middle">#1041 9f3a</text>
+<path d="M570,672 L585,672" fill="none" stroke="#f5c542" stroke-width="1.2" marker-end="url(#arr-g)"/>
+<rect x="587" y="662" width="70" height="20" rx="4" fill="#0b1020" stroke="#f5c542" stroke-opacity="0.6"/>
+<text x="622" y="676" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="9.5" fill="#e6e9f2" font-weight="normal" text-anchor="middle">#1042 c07e</text>
+<path d="M658,672 L673,672" fill="none" stroke="#f5c542" stroke-width="1.2" marker-end="url(#arr-g)"/>
+<rect x="675" y="662" width="70" height="20" rx="4" fill="#0b1020" stroke="#f5c542" stroke-opacity="0.6"/>
+<text x="710" y="676" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="9.5" fill="#e6e9f2" font-weight="normal" text-anchor="middle">#1043 51bd</text>
+<path d="M746,672 L761,672" fill="none" stroke="#f5c542" stroke-width="1.2" marker-end="url(#arr-g)"/>
+<rect x="763" y="662" width="70" height="20" rx="4" fill="#0b1020" stroke="#f5c542" stroke-opacity="0.6"/>
+<text x="798" y="676" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="9.5" fill="#e6e9f2" font-weight="normal" text-anchor="middle">#1044 e2a9</text>
+<path d="M834,672 L849,672" fill="none" stroke="#f5c542" stroke-width="1.2" marker-end="url(#arr-g)"/>
+<rect x="851" y="662" width="70" height="20" rx="4" fill="#0b1020" stroke="#f5c542" stroke-opacity="0.6"/>
+<text x="886" y="676" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="9.5" fill="#e6e9f2" font-weight="normal" text-anchor="middle">#1045 7d10</text>
+<path d="M710,293 L710,598" fill="none" stroke="#f5c542" stroke-width="3.2" marker-end="url(#arr-g)"/>
+<path d="M672,293 C672,312 638,310 638,327" fill="none" stroke="#9aa4bf" stroke-width="1.2" stroke-dasharray="6 5" marker-end="url(#arr-m)"/>
+<path d="M748,293 C748,312 782,310 782,327" fill="none" stroke="#9aa4bf" stroke-width="1.2" stroke-dasharray="6 5" marker-end="url(#arr-m)"/>
+<rect x="1070" y="110" width="280" height="400" rx="14" fill="#a78bfa" fill-opacity="0.07" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="1088" y="138" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#a78bfa" font-weight="700" text-anchor="start" letter-spacing="1.2">SEALED DEFENSE ENCLAVE</text>
+<text x="1088" y="156" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="start">gVisor · RO bundle · no egress</text>
+<rect x="1095" y="180" width="230" height="70" rx="10" fill="#121a33" stroke="#a78bfa" stroke-width="1.4"/>
+<text x="1210.0" y="210.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#e6e9f2" font-weight="700" text-anchor="middle">Input Guard</text>
+<text x="1210.0" y="228.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">blue&#x27;s bundle, runs sealed</text>
+<rect x="1095" y="330" width="230" height="70" rx="10" fill="#121a33" stroke="#a78bfa" stroke-width="1.4"/>
+<text x="1210.0" y="360.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#e6e9f2" font-weight="700" text-anchor="middle">Output Guard</text>
+<text x="1210.0" y="378.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">verdict-only output schema</text>
+<text x="1210" y="436" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" fill="#e6e9f2" font-weight="normal" text-anchor="middle" font-style="italic">blue authors it,</text>
+<text x="1210" y="454" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" fill="#e6e9f2" font-weight="normal" text-anchor="middle" font-style="italic">blue can&#x27;t watch it</text>
+<text x="1210" y="480" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="10.5" fill="#9aa4bf" font-weight="normal" text-anchor="middle">bundle mounted read-only at ARM</text>
+<text x="1210" y="496" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="10.5" fill="#9aa4bf" font-weight="normal" text-anchor="middle">logs → Authority only</text>
+<rect x="1400" y="110" width="290" height="400" rx="14" fill="#34d399" fill-opacity="0.07" stroke="#34d399" stroke-width="1.6"/>
+<text x="1418" y="138" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#34d399" font-weight="700" text-anchor="start" letter-spacing="1.2">MODEL CLEAN ROOM</text>
+<text x="1418" y="156" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="start">ephemeral per trial · cores 6-7</text>
+<rect x="1425" y="175" width="240" height="130" rx="10" fill="#121a33" stroke="#34d399" stroke-width="1.4"/>
+<text x="1545.0" y="208.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#e6e9f2" font-weight="700" text-anchor="middle">Client LLM</text>
+<text x="1545.0" y="226.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">digest-pinned, read-only weights</text>
+<text x="1545.0" y="244.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">per-session KV cache, flushed</text>
+<text x="1545.0" y="262.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">no egress · tools disabled</text>
+<text x="1545.0" y="280.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">temp 0 · fixed seed (replayable)</text>
+<rect x="1425" y="330" width="240" height="84" rx="10" fill="#121a33" stroke="#34d399" stroke-width="1.4"/>
+<text x="1545.0" y="358.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#e6e9f2" font-weight="700" text-anchor="middle">Purity Fingerprint</text>
+<text x="1545.0" y="376.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">golden probes → H(outputs)</text>
+<text x="1545.0" y="394.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">F_pre must equal F_post</text>
+<rect x="1440" y="436" width="131.6" height="22" rx="11.0" fill="#34d399" fill-opacity="0.12" stroke="#34d399" stroke-opacity="0.7"/>
+<text x="1505.8" y="450.6" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="10" fill="#34d399" font-weight="600" text-anchor="middle">sha256 7c1e…b04d ✓</text>
+<text x="1545" y="492" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" fill="#e6e9f2" font-weight="normal" text-anchor="middle" font-style="italic">fresh replica every trial</text>
+<rect x="1070" y="550" width="620" height="180" rx="14" fill="#94a3b8" fill-opacity="0.07" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="1088" y="578" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#94a3b8" font-weight="700" text-anchor="start" letter-spacing="1.2">OBSERVABILITY · METADATA ONLY · PUSH-ONLY</text>
+<text x="1088" y="596" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="start">sees hashes, sizes, timings, verdict codes · never plaintext</text>
+<rect x="1090" y="612" width="180" height="76" rx="10" fill="#121a33" stroke="#94a3b8" stroke-width="1.4"/>
+<text x="1180.0" y="636.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#e6e9f2" font-weight="700" text-anchor="middle">Runtime Sensors</text>
+<text x="1180.0" y="654.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">Falco / Tetragon eBPF</text>
+<text x="1180.0" y="672.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">exec · connect · file</text>
+<rect x="1290" y="612" width="180" height="76" rx="10" fill="#121a33" stroke="#94a3b8" stroke-width="1.4"/>
+<text x="1380.0" y="636.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#e6e9f2" font-weight="700" text-anchor="middle">Canary Watcher</text>
+<text x="1380.0" y="654.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">+ boundary DLP</text>
+<text x="1380.0" y="672.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">hit → INVALIDATE &lt; 1 s</text>
+<rect x="1490" y="612" width="180" height="76" rx="10" fill="#121a33" stroke="#94a3b8" stroke-width="1.4"/>
+<text x="1580.0" y="636.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#e6e9f2" font-weight="700" text-anchor="middle">Anomaly Detector</text>
+<text x="1580.0" y="654.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">rate + latency drift</text>
+<text x="1580.0" y="672.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">probing patterns</text>
+<text x="1090" y="716" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="11" fill="#ff6b6b" font-weight="600" text-anchor="start">alerts → Arbiter → trial INVALIDATED</text>
+<path d="M1068,705 L1014,705" fill="none" stroke="#ff6b6b" stroke-width="1.8" marker-end="url(#arr-r)"/>
+<path d="M326,202 C450,202 470,236 556,238" fill="none" stroke="#e6e9f2" stroke-width="1.6" marker-end="url(#arr-w)"/>
+<circle cx="440" cy="210" r="10" fill="#0b1020" stroke="#e6e9f2" stroke-width="1.5"/>
+<text x="440" y="214" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#e6e9f2" font-weight="700" text-anchor="middle">1</text>
+<text x="420" y="182" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="10.5" fill="#9aa4bf" font-weight="normal" text-anchor="start">sealed case · mTLS</text>
+<path d="M862,238 C960,238 990,212 1091,212" fill="none" stroke="#e6e9f2" stroke-width="1.6" marker-end="url(#arr-w)"/>
+<circle cx="972" cy="226" r="10" fill="#0b1020" stroke="#e6e9f2" stroke-width="1.5"/>
+<text x="972" y="230" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#e6e9f2" font-weight="700" text-anchor="middle">2</text>
+<path d="M1327,212 L1421,212" fill="none" stroke="#e6e9f2" stroke-width="1.6" marker-end="url(#arr-w)"/>
+<circle cx="1375" cy="212" r="10" fill="#0b1020" stroke="#e6e9f2" stroke-width="1.5"/>
+<text x="1375" y="216" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#e6e9f2" font-weight="700" text-anchor="middle">3</text>
+<path d="M1423,282 C1378,282 1372,362 1329,362" fill="none" stroke="#e6e9f2" stroke-width="1.6" marker-end="url(#arr-w)"/>
+<circle cx="1382" cy="322" r="10" fill="#0b1020" stroke="#e6e9f2" stroke-width="1.5"/>
+<text x="1382" y="326" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#e6e9f2" font-weight="700" text-anchor="middle">4</text>
+<path d="M1093,360 C1010,360 960,250 852,258" fill="none" stroke="#e6e9f2" stroke-width="1.6" marker-end="url(#arr-w)"/>
+<circle cx="985" cy="306" r="10" fill="#0b1020" stroke="#e6e9f2" stroke-width="1.5"/>
+<text x="985" y="310" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#e6e9f2" font-weight="700" text-anchor="middle">5</text>
+<text x="1210" y="296" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="10.5" fill="#9aa4bf" font-weight="normal" text-anchor="middle">verdict + output stay sealed</text>
+<path d="M806,293 C806,312 926,306 926,326" fill="none" stroke="#e6e9f2" stroke-width="1.6" marker-end="url(#arr-w)"/>
+<circle cx="880" cy="309" r="10" fill="#0b1020" stroke="#e6e9f2" stroke-width="1.5"/>
+<text x="880" y="313" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#e6e9f2" font-weight="700" text-anchor="middle">6</text>
+<path d="M614,293 C614,312 494,306 494,326" fill="none" stroke="#e6e9f2" stroke-width="1.6" marker-end="url(#arr-w)"/>
+<circle cx="540" cy="309" r="10" fill="#0b1020" stroke="#e6e9f2" stroke-width="1.5"/>
+<text x="540" y="313" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#e6e9f2" font-weight="700" text-anchor="middle">7</text>
+<path d="M426,372 C384,372 372,232 329,232" fill="none" stroke="#e6e9f2" stroke-width="1.6" marker-end="url(#arr-w)"/>
+<circle cx="384" cy="312" r="10" fill="#0b1020" stroke="#e6e9f2" stroke-width="1.5"/>
+<text x="384" y="316" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#e6e9f2" font-weight="700" text-anchor="middle">8</text>
+<path d="M322,318 C385,318 380,452 424,452" fill="none" stroke="#ff6b6b" stroke-width="1.3" stroke-dasharray="6 5" marker-end="url(#arr-r)"/>
+<text x="357" y="372" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="10.5" fill="#ff6b6b" font-weight="600" text-anchor="start">C_red</text>
+<path d="M327,548 C385,548 380,478 424,478" fill="none" stroke="#4da3ff" stroke-width="1.3" stroke-dasharray="6 5" marker-end="url(#arr-b)"/>
+<text x="356" y="530" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="10.5" fill="#4da3ff" font-weight="600" text-anchor="start">C_blue</text>
+<rect x="30" y="772" width="320" height="78" rx="10" fill="#121a33" stroke="#94a3b8" stroke-width="1.4"/>
+<text x="190.0" y="797.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#e6e9f2" font-weight="700" text-anchor="middle">War Room</text>
+<text x="190.0" y="815.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">live three-lane dashboard</text>
+<text x="190.0" y="833.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">shows IDs and hashes only, never payloads</text>
+<rect x="410" y="772" width="290" height="78" rx="10" fill="#121a33" stroke="#f5c542" stroke-width="1.4"/>
+<text x="555.0" y="797.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#e6e9f2" font-weight="700" text-anchor="middle">Verifier CLI · dbverify</text>
+<text x="555.0" y="815.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">offline: chain · signatures</text>
+<text x="555.0" y="833.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">commitments · deterministic replay</text>
+<rect x="720" y="772" width="290" height="78" rx="10" fill="#121a33" stroke="#f5c542" stroke-width="1.4" stroke-dasharray="6 5"/>
+<text x="865.0" y="806.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#e6e9f2" font-weight="700" text-anchor="middle">Public Anchor (optional)</text>
+<text x="865.0" y="824.0" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="middle">checkpoint root → Sigstore Rekor</text>
+<path d="M560,702 L560,768" fill="none" stroke="#f5c542" stroke-width="1.6" marker-end="url(#arr-g)"/>
+<path d="M450,702 C450,756 190,744 190,768" fill="none" stroke="#f5c542" stroke-width="1.4" marker-end="url(#arr-g)"/>
+<path d="M865,702 L865,768" fill="none" stroke="#f5c542" stroke-width="1.4" stroke-dasharray="6 5" marker-end="url(#arr-g)"/>
+<rect x="1070" y="772" width="620" height="78" rx="10" fill="#121a33" stroke="#9aa4bf" stroke-opacity="0.5"/>
+<text x="1088" y="796" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#9aa4bf" font-weight="700" text-anchor="start" letter-spacing="1.5">LEGEND</text>
+<path d="M1090,818 L1140,818" fill="none" stroke="#e6e9f2" stroke-width="1.6" marker-end="url(#arr-w)"/>
+<text x="1148" y="822" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#e6e9f2" font-weight="normal" text-anchor="start">data path 1-8</text>
+<path d="M1260,818 L1310,818" fill="none" stroke="#f5c542" stroke-width="3.2" marker-end="url(#arr-g)"/>
+<text x="1318" y="822" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#e6e9f2" font-weight="normal" text-anchor="start">ledger append</text>
+<path d="M1430,818 L1480,818" fill="none" stroke="#9aa4bf" stroke-width="1.2" stroke-dasharray="6 5" marker-end="url(#arr-m)"/>
+<text x="1488" y="822" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#e6e9f2" font-weight="normal" text-anchor="start">control / commitment</text>
+<circle cx="1102" cy="838" r="7" fill="#0b1020" stroke="#ff6b6b" stroke-width="1.4"/>
+<text x="1102" y="841.5" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="9" fill="#ff6b6b" font-weight="700" text-anchor="middle">✕</text>
+<text x="1116" y="842" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#e6e9f2" font-weight="normal" text-anchor="start">forbidden path (breach drill proves it&#x27;s denied)</text>
+<rect x="1460" y="829" width="63.1" height="18" rx="9.0" fill="#94a3b8" fill-opacity="0.12" stroke="#94a3b8" stroke-opacity="0.7"/>
+<text x="1491.56" y="841.42" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="9.5" fill="#94a3b8" font-weight="600" text-anchor="middle">◆ canary</text>
+<text x="1540" y="842" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" fill="#e6e9f2" font-weight="normal" text-anchor="start">honeytoken</text>
+<rect x="30" y="880" width="1660" height="118" rx="14" fill="#ffffff" fill-opacity="0.03" stroke="#9aa4bf" stroke-opacity="0.45" stroke-dasharray="3 5"/>
+<text x="48" y="906" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" fill="#e6e9f2" font-weight="700" text-anchor="start" letter-spacing="1.2">HOST · ANY STANDARD CLOUD VM · NO SPECIAL HARDWARE · docker compose up</text>
+<rect x="48" y="920" width="176.2" height="24" rx="12.0" fill="#94a3b8" fill-opacity="0.1" stroke="#94a3b8" stroke-opacity="0.7"/>
+<text x="136.12" y="935.78" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="10.5" fill="#94a3b8" font-weight="600" text-anchor="middle">rootless Docker / Podman</text>
+<rect x="234.24" y="920" width="98.1" height="24" rx="12.0" fill="#94a3b8" fill-opacity="0.1" stroke="#94a3b8" stroke-opacity="0.7"/>
+<text x="283.3" y="935.78" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="10.5" fill="#94a3b8" font-weight="600" text-anchor="middle">gVisor runsc</text>
+<rect x="342.36" y="920" width="137.2" height="24" rx="12.0" fill="#94a3b8" fill-opacity="0.1" stroke="#94a3b8" stroke-opacity="0.7"/>
+<text x="410.95000000000005" y="935.78" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="10.5" fill="#94a3b8" font-weight="600" text-anchor="middle">seccomp allowlists</text>
+<rect x="489.54" y="920" width="98.1" height="24" rx="12.0" fill="#94a3b8" fill-opacity="0.1" stroke="#94a3b8" stroke-opacity="0.7"/>
+<text x="538.6" y="935.78" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="10.5" fill="#94a3b8" font-weight="600" text-anchor="middle">cap_drop ALL</text>
+<rect x="597.6600000000001" y="920" width="130.7" height="24" rx="12.0" fill="#94a3b8" fill-opacity="0.1" stroke="#94a3b8" stroke-opacity="0.7"/>
+<text x="662.9950000000001" y="935.78" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="10.5" fill="#94a3b8" font-weight="600" text-anchor="middle">no-new-privileges</text>
+<rect x="738.3300000000002" y="920" width="124.2" height="24" rx="12.0" fill="#94a3b8" fill-opacity="0.1" stroke="#94a3b8" stroke-opacity="0.7"/>
+<text x="800.4100000000002" y="935.78" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="10.5" fill="#94a3b8" font-weight="600" text-anchor="middle">read-only rootfs</text>
+<rect x="872.4900000000001" y="920" width="117.7" height="24" rx="12.0" fill="#94a3b8" fill-opacity="0.1" stroke="#94a3b8" stroke-opacity="0.7"/>
+<text x="931.3150000000002" y="935.78" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="10.5" fill="#94a3b8" font-weight="600" text-anchor="middle">user namespaces</text>
+<rect x="1000.1400000000001" y="920" width="137.2" height="24" rx="12.0" fill="#94a3b8" fill-opacity="0.1" stroke="#94a3b8" stroke-opacity="0.7"/>
+<text x="1068.73" y="935.78" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="10.5" fill="#94a3b8" font-weight="600" text-anchor="middle">cgroups v2 cpusets</text>
+<rect x="1147.3200000000002" y="920" width="182.8" height="24" rx="12.0" fill="#94a3b8" fill-opacity="0.1" stroke="#94a3b8" stroke-opacity="0.7"/>
+<text x="1238.6950000000002" y="935.78" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="10.5" fill="#94a3b8" font-weight="600" text-anchor="middle">memory · pids · io limits</text>
+<rect x="1340.0700000000002" y="920" width="189.3" height="24" rx="12.0" fill="#94a3b8" fill-opacity="0.1" stroke="#94a3b8" stroke-opacity="0.7"/>
+<text x="1434.7000000000003" y="935.78" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="10.5" fill="#94a3b8" font-weight="600" text-anchor="middle">per-zone internal networks</text>
+<rect x="48" y="952" width="156.7" height="24" rx="12.0" fill="#94a3b8" fill-opacity="0.1" stroke="#94a3b8" stroke-opacity="0.7"/>
+<text x="126.355" y="967.78" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="10.5" fill="#94a3b8" font-weight="600" text-anchor="middle">nftables default-deny</text>
+<rect x="214.71" y="952" width="182.8" height="24" rx="12.0" fill="#94a3b8" fill-opacity="0.1" stroke="#94a3b8" stroke-opacity="0.7"/>
+<text x="306.08500000000004" y="967.78" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="10.5" fill="#94a3b8" font-weight="600" text-anchor="middle">cloud metadata IP blocked</text>
+<rect x="407.46000000000004" y="952" width="163.2" height="24" rx="12.0" fill="#94a3b8" fill-opacity="0.1" stroke="#94a3b8" stroke-opacity="0.7"/>
+<text x="489.07000000000005" y="967.78" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="10.5" fill="#94a3b8" font-weight="600" text-anchor="middle">mTLS workload identity</text>
+<rect x="580.6800000000001" y="952" width="215.3" height="24" rx="12.0" fill="#94a3b8" fill-opacity="0.1" stroke="#94a3b8" stroke-opacity="0.7"/>
+<text x="688.33" y="967.78" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="10.5" fill="#94a3b8" font-weight="600" text-anchor="middle">per-tenant envelope encryption</text>
+<text x="30" y="1030" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" fill="#9aa4bf" font-weight="normal" text-anchor="start">Flow: Red → Arbiter → Input Guard → Model → Output Guard → Arbiter → Judge + Ledger → Equalizer → Red. Red only ever sees equalized responses; blue only sees results after REVEAL.</text>
+<text x="30" y="1050" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="11" fill="#9aa4bf" font-weight="normal" text-anchor="start">Details: ARCHITECTURE.md · Plan: plan.md</text>
+</svg>
