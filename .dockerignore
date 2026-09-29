@@ -1,0 +1,11 @@
+.git
+.venv
+.pytest_cache
+**/__pycache__
+var
+exports
+infra/certs/out
+docs
+tests
+.env
+*.db

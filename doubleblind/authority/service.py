@@ -599,6 +599,8 @@ class Authority:
             v.update({
                 "cert_profile": t.cert["profile"] if t.cert else None,
                 "cert_summary": t.cert["summary"] if t.cert else None,
+                "accepted_risks": sorted(set(t.cert["summary"]["failed_ids"]) & set(t.config.get("accepted_risks", [])))
+                if t.cert else [],
                 "f_pre": t.f_pre[:16] if t.f_pre else None,
                 "f_post": t.f_post[:16] if t.f_post else None,
                 "leaks_contained": t.leaks_contained,

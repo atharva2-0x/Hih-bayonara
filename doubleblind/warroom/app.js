@@ -76,8 +76,10 @@ function renderCert(t) {
   if (!t || !t.cert_summary) { el.className = "muted"; el.textContent = "not armed yet"; return; }
   const s = t.cert_summary;
   const sim = t.cert_profile !== "docker";
-  const badge = s.fail ? '<span class="badge bad">FAILED</span>' : sim ? '<span class="badge warn">SIMULATION</span>'
-    : '<span class="badge ok">ENFORCED</span>';
+  const accepted = t.accepted_risks || [];
+  const unaccepted = s.failed_ids.filter((i) => !accepted.includes(i)).length;
+  const badge = unaccepted > 0 ? '<span class="badge bad">FAILED</span>' : sim ? '<span class="badge warn">SIMULATION</span>'
+    : accepted.length ? '<span class="badge warn">ENFORCED · ACCEPTED RISK</span>' : '<span class="badge ok">ENFORCED</span>';
   el.className = "cert";
   el.innerHTML = `
     <div class="row"><span>profile</span><span class="mono">${esc(t.cert_profile)} ${badge}</span></div>
@@ -85,6 +87,7 @@ function renderCert(t) {
     <div class="row"><span>failed</span><span class="mono">${s.fail}</span></div>
     <div class="row"><span>skipped</span><span class="mono">${s.skip}</span></div>
     <div class="row"><span>positive controls</span><span class="mono">${s.positive_controls.pass} / ${s.positive_controls.total}</span></div>
+    ${accepted.length ? `<div class="row"><span>accepted risks</span><span class="mono">${accepted.map(esc).join(", ")}</span></div>` : ""}
     ${sim ? '<p class="muted">local simulation: process + network isolation are reported as skipped, never as passed. Run the docker profile for an enforced certificate.</p>' : ""}`;
 }
 
@@ -242,7 +245,9 @@ function handle(ev) {
       break;
     }
     case "alert": {
-      tstate(ev.trial_id).alerts = [ev, ...(tstate(ev.trial_id).alerts || [])].slice(0, 30);
+      const prev = tstate(ev.trial_id).alerts || [];
+      if (prev.some((a) => a.id === ev.id)) break;
+      tstate(ev.trial_id).alerts = [ev, ...prev].slice(0, 30);
       renderAlerts();
       if (ev.kind === "canary_breach" || ev.kind === "canary_contained") {
         const owner = ev.zone === "red" ? "blue" : "red";

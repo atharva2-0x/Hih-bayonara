@@ -11,3 +11,6 @@ infra/certs/out/
 *.db-wal
 *.db-shm
 exports/
+wheelhouse/
+models/
+datasets/

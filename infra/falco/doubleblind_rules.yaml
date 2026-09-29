@@ -1,0 +1,73 @@
+# Falco runtime rules for DOUBLE-BLIND zone containers.
+#
+# These run on the host (eBPF driver) and watch every zone container from the
+# outside, independent of the in-process controls. Load with:
+#   falco -r /etc/falco/falco_rules.yaml -r infra/falco/doubleblind_rules.yaml
+# Validate syntax with:  falco --validate infra/falco/doubleblind_rules.yaml
+# (Falco was not available in the environment this PoC was developed in.)
+
+- macro: db_container
+  condition: (container.name startswith "doubleblind-")
+
+- list: db_allowed_procs
+  items: [python, python3, python3.11, docker-init, tini]
+
+- macro: db_data_paths
+  condition: >
+    (fd.name startswith /certs or fd.name startswith /vault or fd.name startswith /state
+     or fd.name startswith /var/lib/doubleblind)
+
+- rule: DOUBLE-BLIND unexpected process in a zone
+  desc: Every zone container runs exactly one Python service. Anything else (a shell, curl, a compiler) means someone is working inside a zone.
+  condition: spawned_process and db_container and not proc.name in (db_allowed_procs)
+  output: >
+    Unexpected process in DOUBLE-BLIND zone (container=%container.name proc=%proc.cmdline
+    parent=%proc.pname uid=%user.uid)
+  priority: CRITICAL
+  tags: [doubleblind, isolation, T1059]
+
+- rule: DOUBLE-BLIND connection outside the zone networks
+  desc: Zone containers only ever talk to 10.77.0.0/16. Any other destination is an exfiltration attempt or a misconfiguration.
+  condition: outbound and db_container and not fd.snet in ("10.77.0.0/16")
+  output: >
+    DOUBLE-BLIND zone opened a connection outside the zone networks (container=%container.name
+    dest=%fd.sip:%fd.sport proc=%proc.cmdline)
+  priority: CRITICAL
+  tags: [doubleblind, network, exfiltration]
+
+- rule: DOUBLE-BLIND secret material read by a non-service process
+  desc: Certificates, vaults and Authority keys are only ever read by the zone's own Python service.
+  condition: open_read and db_container and db_data_paths and not proc.name in (db_allowed_procs)
+  output: >
+    Non-service process read DOUBLE-BLIND secret material (container=%container.name file=%fd.name
+    proc=%proc.cmdline)
+  priority: CRITICAL
+  tags: [doubleblind, secrets]
+
+- rule: DOUBLE-BLIND container runtime socket access
+  desc: No zone may ever touch the container runtime. Doing so is a direct path to every other zone.
+  condition: >
+    (open_read or open_write) and db_container and
+    fd.name in (/var/run/docker.sock, /run/docker.sock, /run/containerd/containerd.sock, /run/podman/podman.sock)
+  output: DOUBLE-BLIND zone touched the container runtime socket (container=%container.name file=%fd.name)
+  priority: CRITICAL
+  tags: [doubleblind, escape]
+
+- rule: DOUBLE-BLIND cross-process inspection attempt
+  desc: The seccomp profile removes these syscalls; seeing an attempt means someone is probing the boundary.
+  condition: >
+    evt.type in (ptrace, process_vm_readv, process_vm_writev, kcmp, pidfd_getfd, bpf, perf_event_open, setns, unshare)
+    and db_container
+  output: DOUBLE-BLIND zone attempted %evt.type (container=%container.name proc=%proc.cmdline res=%evt.res)
+  priority: CRITICAL
+  tags: [doubleblind, isolation, escape]
+
+- rule: DOUBLE-BLIND write outside allowed volumes
+  desc: Root filesystems are read-only; only tmpfs and the zone's own volume are writable.
+  condition: >
+    open_write and db_container and not (fd.name startswith /tmp or fd.name startswith /dev
+    or fd.name startswith /var/lib/doubleblind or fd.name startswith /drill-out
+    or fd.name startswith /state or fd.name startswith /vault or fd.name startswith /proc)
+  output: DOUBLE-BLIND zone wrote outside its volumes (container=%container.name file=%fd.name proc=%proc.cmdline)
+  priority: WARNING
+  tags: [doubleblind, integrity]

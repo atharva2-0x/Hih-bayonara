@@ -1,0 +1,211 @@
+# DOUBLE-BLIND: isolated deployment on one standard cloud VM.
+#
+#   make env certs wheels build   # once
+#   make up                       # authority, enclave, model, observability
+#   make drill                    # breach-drill agents -> isolation certificate inputs
+#   make docker-trial             # full blinded trial through the isolated zones
+#
+# Zones never share a network with each other. The Arbiter is the only
+# multi-homed service, and each of its listeners binds to exactly one network.
+# All data-plane networks are `internal` (no route out). Only net-ui is not,
+# and it only carries the operator listener, published on the host's loopback.
+
+name: doubleblind
+
+x-hardened: &hardened
+  image: doubleblind:local
+  runtime: ${DB_RUNTIME:-runsc}          # gVisor by default; .env may fall back to runc
+  read_only: true
+  cap_drop: [ALL]
+  security_opt:
+    - no-new-privileges:true
+    - seccomp=${DB_SECCOMP:-./infra/seccomp/doubleblind.json}
+  user: "10001:10001"
+  tmpfs:
+    - /tmp:size=64m,mode=1777
+  pids_limit: 256
+  mem_limit: 512m
+  memswap_limit: 512m
+  init: true
+  restart: "no"
+
+x-tenant: &tenant
+  <<: *hardened
+  mem_limit: 256m
+  memswap_limit: 256m
+  pids_limit: 128
+
+services:
+  # ------------------------------------------------------------ Trial Authority
+  arbiter:
+    <<: *hardened
+    command: ["service", "arbiter"]
+    cpuset: "${DB_CPUS_AUTHORITY:-0-1}"
+    environment:
+      DB_STATE: /var/lib/doubleblind
+      DB_CERTS: /certs
+      DB_DRILL_DIR: /drill-out
+      DB_METRICS_DIR: /metrics
+    volumes:
+      - ./infra/certs/out/authority:/certs:ro
+      - authority-state:/var/lib/doubleblind
+      - drill-results:/drill-out:ro
+      - ./docs/results:/metrics:ro
+    networks:
+      net-red: {ipv4_address: 10.77.1.10}
+      net-blue: {ipv4_address: 10.77.2.10}
+      net-enclave: {ipv4_address: 10.77.3.10}
+      net-model: {ipv4_address: 10.77.4.10}
+      net-obs: {ipv4_address: 10.77.5.10}
+      net-ui: {ipv4_address: 10.77.9.10}
+    ports:
+      - "127.0.0.1:${DB_OPERATOR_PORT:-8100}:8100"
+    depends_on: [enclave, model, obs]
+
+  # ------------------------------------------------------------ Sealed Defense Enclave
+  enclave:
+    <<: *hardened
+    command: ["service", "enclave"]
+    cpuset: "${DB_CPUS_BLUE:-4-5}"
+    environment:
+      DB_CERTS: /certs
+    volumes:
+      - ./infra/certs/out/enclave:/certs:ro
+    networks:
+      net-enclave: {ipv4_address: 10.77.3.20}
+      net-model: {ipv4_address: 10.77.4.21}
+
+  # ------------------------------------------------------------ Model Clean Room
+  model:
+    <<: *hardened
+    command: ["service", "model"]
+    cpuset: "${DB_CPUS_MODEL:-6-7}"
+    mem_limit: ${DB_MODEL_MEM:-1g}
+    memswap_limit: ${DB_MODEL_MEM:-1g}
+    environment:
+      DB_CERTS: /certs
+      DB_MODEL_BACKEND: ${DB_MODEL_BACKEND:-stub}
+      DB_LLAMA_URL: http://10.77.8.30:8080
+      DB_MODEL_SHA256: ${DB_MODEL_SHA256:-}
+    volumes:
+      - ./infra/certs/out/model:/certs:ro
+    networks:
+      net-model: {ipv4_address: 10.77.4.20}
+      net-llm: {ipv4_address: 10.77.8.20}
+
+  # Optional real model (profile "llm"): reachable only from the model wrapper.
+  llama:
+    profiles: ["llm"]
+    image: ${DB_LLAMA_IMAGE:-ghcr.io/ggml-org/llama.cpp:server}
+    runtime: ${DB_RUNTIME:-runsc}
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    cpuset: "${DB_CPUS_MODEL:-6-7}"
+    mem_limit: ${DB_LLAMA_MEM:-4g}
+    command: ["-m", "/models/${DB_MODEL_FILE:-model.gguf}", "--host", "10.77.8.30", "--port", "8080",
+              "-c", "4096", "-np", "1", "--no-webui"]
+    volumes:
+      - ./models:/models:ro
+    networks:
+      net-llm: {ipv4_address: 10.77.8.30}
+
+  # ------------------------------------------------------------ Observability
+  obs:
+    <<: *hardened
+    command: ["service", "obs"]
+    cpuset: "${DB_CPUS_AUTHORITY:-0-1}"
+    environment:
+      DB_CERTS: /certs
+    volumes:
+      - ./infra/certs/out/obs:/certs:ro
+    networks:
+      net-obs: {ipv4_address: 10.77.5.20}
+
+  # ------------------------------------------------------------ Tenants (run on demand)
+  red-runner:
+    <<: *tenant
+    profiles: ["tenants"]
+    cpuset: "${DB_CPUS_RED:-2-3}"
+    environment:
+      DB_CERTS: /certs
+      DB_ARBITER_URL: https://10.77.1.10:8443
+      DB_VAULT: /vault/red/vault.json
+      DB_STATE: /state/red
+    volumes:
+      - ./infra/certs/out/red:/certs:ro
+      - red-vault:/vault/red
+      - red-state:/state/red
+      - ./datasets:/datasets:ro
+    networks:
+      net-red: {ipv4_address: 10.77.1.20}
+
+  blue-workbench:
+    <<: *tenant
+    profiles: ["tenants"]
+    cpuset: "${DB_CPUS_BLUE:-4-5}"
+    environment:
+      DB_CERTS: /certs
+      DB_ARBITER_URL: https://10.77.2.10:8443
+      DB_STATE: /state/blue
+    volumes:
+      - ./infra/certs/out/blue:/certs:ro
+      - blue-state:/state/blue
+    networks:
+      net-blue: {ipv4_address: 10.77.2.20}
+
+  # ------------------------------------------------------------ Breach-drill agents
+  # Same image, same hardening, same network position and identity as the zone
+  # they test. They write reports the Arbiter aggregates into the certificate.
+  drill-red:
+    <<: *tenant
+    profiles: ["drill"]
+    command: ["drill", "--zone", "red", "--out", "/drill-out"]
+    environment: {DB_TLS_CERT: /certs/client.crt, DB_TLS_KEY: /certs/client.key}
+    volumes: ["./infra/certs/out/red:/certs:ro", "drill-results:/drill-out"]
+    networks: {net-red: {ipv4_address: 10.77.1.30}}
+  drill-blue:
+    <<: *tenant
+    profiles: ["drill"]
+    command: ["drill", "--zone", "blue", "--out", "/drill-out"]
+    environment: {DB_TLS_CERT: /certs/client.crt, DB_TLS_KEY: /certs/client.key}
+    volumes: ["./infra/certs/out/blue:/certs:ro", "drill-results:/drill-out"]
+    networks: {net-blue: {ipv4_address: 10.77.2.30}}
+  drill-enclave:
+    <<: *tenant
+    profiles: ["drill"]
+    command: ["drill", "--zone", "enclave", "--out", "/drill-out"]
+    environment: {DB_TLS_CERT: /certs/client.crt, DB_TLS_KEY: /certs/client.key}
+    volumes: ["./infra/certs/out/enclave:/certs:ro", "drill-results:/drill-out"]
+    networks:
+      net-enclave: {ipv4_address: 10.77.3.30}
+      net-model: {ipv4_address: 10.77.4.31}
+  drill-model:
+    <<: *tenant
+    profiles: ["drill"]
+    command: ["drill", "--zone", "model", "--out", "/drill-out"]
+    volumes: ["drill-results:/drill-out"]
+    networks: {net-model: {ipv4_address: 10.77.4.30}}
+  drill-observability:
+    <<: *tenant
+    profiles: ["drill"]
+    command: ["drill", "--zone", "observability", "--out", "/drill-out"]
+    environment: {DB_TLS_CERT: /certs/client.crt, DB_TLS_KEY: /certs/client.key}
+    volumes: ["./infra/certs/out/obs:/certs:ro", "drill-results:/drill-out"]
+    networks: {net-obs: {ipv4_address: 10.77.5.30}}
+
+networks:
+  net-red:     {internal: true, ipam: {config: [{subnet: 10.77.1.0/24}]}}
+  net-blue:    {internal: true, ipam: {config: [{subnet: 10.77.2.0/24}]}}
+  net-enclave: {internal: true, ipam: {config: [{subnet: 10.77.3.0/24}]}}
+  net-model:   {internal: true, ipam: {config: [{subnet: 10.77.4.0/24}]}}
+  net-obs:     {internal: true, ipam: {config: [{subnet: 10.77.5.0/24}]}}
+  net-llm:     {internal: true, ipam: {config: [{subnet: 10.77.8.0/24}]}}
+  net-ui:      {ipam: {config: [{subnet: 10.77.9.0/24}]}}
+
+volumes:
+  authority-state:
+  drill-results:
+  red-vault:
+  red-state:
+  blue-state:

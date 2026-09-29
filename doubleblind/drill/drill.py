@@ -98,10 +98,20 @@ def _status_field(name: str) -> str | None:
     return None
 
 
+GVISOR_VERSION_SIGNATURE = "4.4.0 #1 SMP Sun Jan 10 15:06:54 PST 2016"
+
+
 def _in_gvisor() -> bool:
-    """gVisor's emulated kernel log starts with 'Starting gVisor...'."""
+    """gVisor reports a fixed synthetic kernel version, and its emulated kernel
+    log starts with 'Starting gVisor...'. Either signal is accepted (dmesg may be
+    blocked by our seccomp profile, which removes syslog)."""
     import subprocess
 
+    try:
+        if GVISOR_VERSION_SIGNATURE in Path("/proc/version").read_text():
+            return True
+    except OSError:
+        pass
     try:
         out = subprocess.run(["dmesg"], capture_output=True, text=True, timeout=3).stdout
         return "gVisor" in out
@@ -121,6 +131,8 @@ def process_checks(zone: str, forbidden_paths: list[str]) -> list[dict]:
     gv = _in_gvisor()
     out.append(result(zone, "process.seccomp", "process", "pass" if sec == "2" or gv else "fail",
                       f"Seccomp={sec}{' (gVisor sandbox)' if gv else ''}"))
+    out.append(result(zone, "process.gvisor_sandbox", "process", "pass" if gv else "fail",
+                      "gVisor user-space kernel" if gv else "runc: syscalls reach the host kernel directly"))
     out.append(result(zone, "process.non_root", "process", "pass" if os.getuid() != 0 else "fail",
                       f"uid={os.getuid()}"))
     probe = Path("/drill-write-probe")
@@ -134,13 +146,30 @@ def process_checks(zone: str, forbidden_paths: list[str]) -> list[dict]:
              if Path(p).exists()]
     out.append(result(zone, "process.no_runtime_socket", "process", "fail" if socks else "pass",
                       f"present: {socks}" if socks else "no container runtime socket mounted"))
-    present = [p for p in forbidden_paths if Path(p).exists()]
+    mounts = _mount_points()
+    present = [p for p in forbidden_paths if p in mounts or any(m.startswith(p.rstrip("/") + "/") for m in mounts)]
     out.append(result(zone, "process.no_foreign_mounts", "process", "fail" if present else "pass",
-                      f"visible: {present}" if present else f"{len(forbidden_paths)} foreign paths absent"))
+                      f"mounted: {present}" if present else f"none of {len(forbidden_paths)} foreign data paths is mounted"))
     return out
 
 
+def _mount_points() -> set[str]:
+    """Mount points visible to this process. Every zone shares one image, so an
+    empty directory is not evidence of anything; a *mount* of another zone's
+    volume is."""
+    try:
+        return {line.split()[1] for line in Path("/proc/self/mounts").read_text().splitlines() if line.strip()}
+    except OSError:
+        return set()
+
+
 # --------------------------------------------------------------------- network
+
+
+def _why(exc: OSError) -> str:
+    import errno as _errno
+    code = _errno.errorcode.get(exc.errno or 0)
+    return f"{type(exc).__name__}({code})" if code else type(exc).__name__
 
 
 def _tcp(host: str, port: int, timeout: float) -> tuple[bool, str]:
@@ -148,7 +177,7 @@ def _tcp(host: str, port: int, timeout: float) -> tuple[bool, str]:
         with socket.create_connection((host, port), timeout=timeout):
             return True, "connected"
     except OSError as exc:
-        return False, type(exc).__name__
+        return False, _why(exc)
 
 
 def _tls_accepts(host: str, port: int, timeout: float, cert: str | None, key: str | None) -> tuple[bool, str]:

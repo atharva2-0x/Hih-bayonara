@@ -127,6 +127,8 @@ def verify_export(export: dict, pinned_public_key: str | None = None, replay: st
                   detail + ("" if hash_ok else "; certificate hash does not match ARMED"))
         elif cert["profile"] != "docker" or s["skip"]:
             v.add("isolation certificate", "warn", detail + "; isolation NOT enforced (simulation)")
+        elif armed.get("accepted_risks"):
+            v.add("isolation certificate", "warn", detail + "; enforced, except the explicitly accepted risks")
         else:
             v.add("isolation certificate", "pass", detail)
     elif tr["state"] not in ("INVALIDATED",):
